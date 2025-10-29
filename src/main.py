@@ -68,6 +68,25 @@ def summarize_comm_tokens(team):
         total_turns += usage["num_comm_turns"]
     return per_agent, total_tokens, total_turns
 
+def write_comm_tokens_to_log(save_dir, per_agent_usage, team_tokens, team_turns):
+    """
+    Append the episode's communication token summary to a plain-text log.
+    """
+    os.makedirs(save_dir, exist_ok=True)
+    run_ts = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    log_path = os.path.join(save_dir, f"run_{run_ts}_.log")
+
+    lines = ["Communication token usage (episode summary):"]
+    for u in per_agent_usage:
+        lines.append(
+            f"{u['agent']} (agent{u['agent_index']}): "
+            f"{u['total_comm_tokens']} tokens across {u['num_comm_turns']} turns"
+        )
+    lines.append(f"Team total: {team_tokens} tokens across {team_turns} turns")
+    with open(log_path, "a", encoding="utf-8") as f:
+        for line in lines:
+            f.write(line + "\n")
+        f.write("\n")  # blank line between episodes
 
 def main(variant):
 
@@ -251,6 +270,7 @@ def main(variant):
         for usage in per_agent_usage_final:
             print(f"  {usage['agent']} (agent{usage['agent_index']}): {usage['total_comm_tokens']} tokens across {usage['num_comm_turns']} turns")
         print(f"  Team total: {team_tokens_final} tokens across {team_turns_final} turns\n")
+        write_comm_tokens_to_log(save_dir, per_agent_usage_final, team_tokens_final, team_turns_final)
         print(f"Episode {i+1}/{episode}: {r_total}\n====\n\n")
         results.append(r_total)
 
