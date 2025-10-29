@@ -1,0 +1,30 @@
+timestep,agent,tokens,utterance
+5,Assistant,266,"""Chef, please cook both eggs in the pot at the same time. Once they are done, could you please fill a dish with the cooked eggs and place it on the counter? Then pass the dish to me."""
+5,Assistant,167,"""I will blend the egg first to speed up the cooking process. Once blended, I will place it back on the counter for you to cook it in the pot."""
+5,Assistant,279,"""Assistant, please pick up the egg from the counter and put it in the blender. Blend the egg. Once the blending is done, please get a dish from the dish dispenser and fill it with the blended egg. Then, place the dish on the counter and pass it to me."""
+6,Assistant,240,Please cut the egg and then pick up the egg from the counter and place it in the blender when you are ready. I will cook it in the blender.
+6,Assistant,228,I will cut the egg on the chopping board and cook it in the blender. Please pick up the egg from the counter and place it in the blender when you are ready.
+9,Assistant,119,[NOTHING]
+9,Assistant,125,"Chef, I have the egg on the counter ready for cooking. Could you please use the pot to boil the egg?"
+10,Assistant,117,"""Please serve the boiled egg."""
+10,Assistant,134,"""Please cook the boiled egg in the pot."" [END]"
+10,Assistant,217,"""Please pick up the boiled egg from the pot and place it on the counter. Stir the pot once you have the egg."""
+11,Assistant,165,[NOTHING]
+11,Assistant,190,"Please cut the boiled egg on the chopping board. Then, blend the cut egg in the blender. After blending, fill a dish with the blended egg and place it on the counter."
+12,Assistant,219,"Please place the boiled egg on the counter so I can put it in the oven to cook. After cooking, I will stir it, check its doneness, take it out of the oven, and place it back on the counter."
+12,Assistant,204,"Please place the boiled egg on the chopping board so I can cook it in the oven. After cooking, I will check its doneness and place it back on the counter."
+12,Assistant,210,"Please place the boiled egg directly into the oven to cook. After cooking, I will stir it, check its doneness, and take it out of the oven. Please place it back on the counter once it's ready."
+12,Assistant,231,"Please place the boiled egg on the chopping board so I can cook it in the oven. After cooking, I will stir it, check its doneness, and take it out of the oven. Please place it back on the counter once it's ready."
+12,Assistant,219,"Chef, please place the boiled egg on the chopping board so I can cook it in the oven. After cooking, I will stir it, check its doneness, and take it out of the oven. Once it's ready, please place it back on the counter."
+12,Assistant,181,"Please place the boiled egg on the counter so I can put it in the oven to cook. After cooking, I will stir it, check its doneness, take it out of the oven, and place it back on the counter."
+12,Assistant,212,"Please place the boiled egg on the counter so I can put it in the oven to cook. After cooking, I will stir it, check its doneness, take it out of the oven, and place it back on the counter."
+12,Assistant,176,"Chef, please deliver the boiled egg to the counter so I can place it in the oven to cook. After cooking, I will stir it, check its doneness, and take it out of the oven, then place it back on the counter."
+12,Assistant,171,"Chef, please place the boiled egg on the chopping board so I can cook it in the oven. After cooking, I will stir it, check its doneness, and place it back on the counter."
+12,Assistant,160,"Chef, please place the boiled egg on the counter so I can start preparing the dish. After that, please deliver the egg to the counter when it's ready."
+12,Assistant,204,"Please place the boiled egg on the counter so I can put it in the oven to cook. After cooking, I will stir it, check its doneness, take it out of the oven, and place it back on the counter."
+12,Assistant,217,"Please place the boiled egg on the counter so I can put it in the oven to cook. After cooking, I will stir it, check its doneness, take it out of the oven, and place it back on the counter. Then, I need you to deliver the soups."
+12,Assistant,213,"Chef, could you please place the boiled egg on the counter as I need to cook it further. After that, I'll stir it, check its doneness, take it out of the oven, and place it back on the counter. Once it's ready, please deliver the soups."
+12,Assistant,117,"Please place the boiled egg in the oven to cook. I will then stir it, check its doneness, take it out of the oven, and place it back on the counter. [END]"
+12,Assistant,232,"Please pick up the boiled egg and deliver the soups. I will prepare the boiled egg by placing the egg in the oven, turning it on, waiting for 5 timesteps, stirring the egg, waiting for 5 timesteps, checking the doneness of the egg, taking it out of the oven, and placing it back on the counter."
+13,Assistant,165,"Cut the boiled egg on chopping_board0, then stir it in the blender0. After blending, fill a dish with the mixture and place it on the counter. Once it's ready, deliver the blended boiled egg to the chef."
+13,Assistant,220,"""Assistant, cut the egg on chopping_board0, then stir it in the blender0. After blending, fill a dish with the mixture and place it on the counter. Once it's ready, deliver the blended boiled egg to the chef."""

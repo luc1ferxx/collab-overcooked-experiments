@@ -1,4 +1,5 @@
-import itertools, os, json, re
+import itertools, os, json, re, glob
+import csv
 from collections import defaultdict
 from typing import Union
 import numpy as np
@@ -15,6 +16,7 @@ from overcooked_ai_py.mdp.overcooked_mdp import OvercookedGridworld, OvercookedS
 import queue
 import warnings
 import copy
+from .token_meter import count_tokens
 
 from rich import print as rprint
 from collab.modules import if_two_sentence_similar_meaning
@@ -124,6 +126,12 @@ class LLMAgents(LLMPair):
         self.actor = actor
         self.name = "Chef" if self.actor == "chef" else "Assistant"
         self.communication_role = "ask"
+        self.reference_actions_cache = {}
+        self.reference_plan = []
+        self.reference_index = 0
+        self.executing_reference_step = None
+        self.reference_plan_order = None
+        self.using_reference = False
         self.recipe = {}
         self.order = ""
         self.failed_history = []
@@ -133,6 +141,34 @@ class LLMAgents(LLMPair):
         turn_statistics_dict_cp = copy.deepcopy(turn_statistics_dict)
         self.turn_statistics_dict = turn_statistics_dict_cp
         # self.generate_layout_prompt()
+        # === BEGIN TOKEN-METER ===
+        # cumulative tokens used only for COMMUNICATION turns (not planning-only turns)
+        self.comm_token_total = 0
+        # optional per-turn log: (timestep, tokens, who, utterance)
+        self.comm_token_log = []   # list[dict]
+        # === END TOKEN-METER ===
+        
+        
+    def get_comm_token_usage(self):
+        """
+        Returns a simple summary for this agent.
+        """
+        return {
+            "agent": self.name,                # "Chef" or "Assistant"
+            "total_comm_tokens": int(self.comm_token_total),
+            "num_comm_turns": len(self.comm_token_log),
+            "by_turn": list(self.comm_token_log),  # shallow copy
+        }
+
+    def save_comm_tokens_csv(self, path):
+        dirpath = os.path.dirname(path) or "."
+        os.makedirs(dirpath, exist_ok=True)
+        with open(path, "w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            w.writerow(["timestep", "agent", "tokens", "utterance"])
+            for row in self.comm_token_log:
+                w.writerow([row["t"], row["agent"], row["tokens"], row["utterance"]])
+
 
     def set_mdp(self, mdp: OvercookedGridworld):
         self.mdp = mdp
@@ -206,9 +242,10 @@ class LLMAgents(LLMPair):
   3. Work in parallel with the assistant to finish the order in the shortest time possible, unless there is nothing you can do in the current situation. If you have nothing to do, you can wait.
   4. Serve the dish (optional). If the recipe specifies that the dish needs to be served on a plate, you must use `fill_dish_with_food(utensil_name)` to serve the dish from the utensil first; otherwise, just pick up the food from the utensil.
   5. Use `deliver_soup()."""
-        assistant_workflow = """The usual workflow for the Assistant is:  
-- 1. Ask the Chef for guidance, since you do not have the recipe and need the Chef to help you plan.  
-- 2. Follow the Chef’s instructions unless they are incorrect. For example, if the Chef requests a utensil that is not available on your side, you should refuse and inform him. """
+        assistant_workflow = """The usual workflow for the Assistant is:
+- 1. Ask the Chef for guidance when you feel uncertain about the next step, but once the Chef assigns you a task you must execute it immediately instead of asking again.
+- 2. Perform every operation that is inside your accessible space yourself (ingredient dispenser, dish dispenser, chopping boards, blender, counters). Never create a `request(...)` for an action you can execute; reserve requests only for tasks that you physically cannot perform.
+- 3. Follow the Chef’s instructions unless they are incorrect. For example, if the Chef requests a utensil that is not available on your side, you should refuse and inform him."""
         #  -1. Communicate with the chef for instruction and don't make your own plans.\n\
         #  -2. Follow the instructions given by Chef unless his instruction is wrong. For example, if the utensil he wants you to use in not in your side, you should refuse and tell him.\n"
         # load recipe
@@ -257,6 +294,18 @@ class LLMAgents(LLMPair):
         self.teammate_intentions_dict = {}
 
         self.teammate = teammate
+        # === BEGIN TOKEN-METER RESET ===
+        self.comm_token_total = 0
+        self.comm_token_log.clear()
+        # === END TOKEN-METER RESET ===
+        self.reference_plan = []
+        self.reference_index = 0
+        self.executing_reference_step = None
+        self.reference_plan_order = None
+        self.using_reference = False
+        if getattr(self.mdp, "start_order_list", None):
+            self.order = self.mdp.start_order_list[0]
+        self.initialize_reference_plan()
 
     def set_agent_index(self, agent_index):
         self.agent_index = agent_index
@@ -568,6 +617,8 @@ class LLMAgents(LLMPair):
         self.planner.current_timestep = state.timestep
         self.teammate.order = state.current_k_order[0]
         self.order = state.current_k_order[0]
+        if self.reference_plan_order != self.order:
+            self.initialize_reference_plan()
         self.change_communication_role("ask", "answer")
         self.planner.dialog_history_list = []
         self.teammate.planner.dialog_history_list = []
@@ -598,6 +649,7 @@ class LLMAgents(LLMPair):
             current_ml_action_done = self.check_current_ml_action_done(state)
             if current_ml_action_done:
                 # generate a new ml action
+                self.advance_reference_plan()
                 self.generate_success_feedback(state)
                 self.current_ml_action = None
                 self.current_ml_action = self.generate_ml_action(state)
@@ -621,6 +673,7 @@ class LLMAgents(LLMPair):
                         self.time_to_wait = 1
                         break
                     self.trace = False
+                    self.executing_reference_step = None
                     self.generate_failure_feedback(
                         self.current_ml_action, self.failed_message
                     )
@@ -1195,6 +1248,15 @@ class LLMAgents(LLMPair):
             self.turn_statistics_dict["statistical_data"]["communication"][
                 communication_index
             ]["token"].append(tokens_num)
+            # === BEGIN TOKEN-METER ACCRUAL ===
+            self.comm_token_total += int(tokens_num or 0)
+            self.comm_token_log.append({
+                "t": self.current_timestep,
+                "agent": self.name,               # "Chef" or "Assistant"
+                "tokens": int(tokens_num or 0),
+                "utterance": str(parse_talk)
+            })
+            # === END TOKEN-METER ACCRUAL ===
             self.turn_statistics_dict["content"]["content"][communication_index].append(
                 {
                     "agent": self.agent_index,
@@ -1211,6 +1273,13 @@ class LLMAgents(LLMPair):
             self.teammate.turn_statistics_dict["statistical_data"]["communication"][
                 communication_index
             ]["token"].append(tokens_num)
+            self.comm_token_total += int(tokens_num or 0)
+            self.comm_token_log.append({
+                "t": self.current_timestep,
+                "agent": self.name,
+                "tokens": int(tokens_num or 0),
+                "utterance": str(parse_talk)
+            })
             self.teammate.turn_statistics_dict["content"]["content"][
                 communication_index
             ].append(
@@ -1270,10 +1339,17 @@ class LLMAgents(LLMPair):
                 self.action_wait_parse.put(p)
                 # rprint(f"[green][ADD][/green]:Add new plan {p}\n")
         elif self.action_wait_parse.qsize() >= 1:
-            pass
-            rprint(
-                f"[yellow][ADD][/yellow]:Current action are too much. Does not add <{new_plan}> in queue\n"
-            )
+            existing = list(self.action_wait_parse.queue)
+            if any(a not in existing for a in new_plan[1:]):
+                while not self.action_wait_parse.empty():
+                    self.action_wait_parse.get()
+                for index, a in enumerate(new_plan):
+                    if index > 0:
+                        self.action_wait_parse.put(a)
+            else:
+                rprint(
+                    f"[yellow][ADD][/yellow]:Current action are too much. Does not add <{new_plan}> in queue\n"
+                )
 
         return end_talk, response
 
@@ -1419,10 +1495,24 @@ class LLMAgents(LLMPair):
                     self.time_to_wait = int(numbers[0])
             return action
 
+        if self.using_reference:
+            if self.reference_index < len(self.reference_plan):
+                self._clear_action_queue()
+                next_action = self.reference_plan[self.reference_index]
+                self.executing_reference_step = self.reference_index
+                return next_action
+            else:
+                self.using_reference = False
+
         # At most one error at a time
         failure_message = ""
         ml_action = ""
         if self.action_wait_parse.empty() or (not self.trace):
+            heuristic_action = self.chef_heuristic_action(state)
+            if heuristic_action is not None:
+                self.executing_reference_step = None
+                self.using_reference = False
+                return heuristic_action
             state_prompt = self.generate_state_prompt(state)
             # Error checking
             for index, s in enumerate(self.planner.dialog_history_list):
@@ -1541,6 +1631,15 @@ class LLMAgents(LLMPair):
                     self.agent_index
                 ]["call"] += 1
                 response = self.communication(communicate_response, state)
+                # === BEGIN TOKEN-METER ACCRUAL ===
+                self.comm_token_total += int(tokens_num or 0)
+                self.comm_token_log.append({
+                    "t": self.current_timestep,
+                    "agent": self.name,
+                    "tokens": int(tokens_num or 0),
+                    "utterance": str(communicate_response)
+                })
+                # === END TOKEN-METER ACCRUAL ===
             elif ("[NOTHING]" not in plan) and (plan != ""):
                 ml_action = self.parse_ml_action_top(plan, True)
             else:
@@ -1589,16 +1688,38 @@ class LLMAgents(LLMPair):
             return "wait(1)" if add_to_queue else ["wait(1)"]
         # divide the action list into several action by split ';'
         action_string = action_string.lower()
-        action_list = action_string.split(";")
-        ml_action_list = action_list
-
-        ml_action = ""
-        for i in ml_action_list:
-            if any(s in i for s in ["request", "accept", "deny", "clarify"]):
+        raw_actions = [
+            a.strip() for a in action_string.split(";") if a.strip() != ""
+        ]
+        ml_action_list = []
+        for a in raw_actions:
+            if a.startswith("request("):
+                converted = self.convert_request_to_self_action(a)
+                if converted:
+                    ml_action_list.append(converted)
                 continue
-            else:
-                ml_action = i
-                break
+            ml_action_list.append(a)
+
+        allowed_map = self.get_reference_allowed_actions()
+        if allowed_map is not None:
+            allowed_set = allowed_map.get(self.agent_index)
+            if allowed_set is not None:
+                filtered = []
+                for candidate in ml_action_list:
+                    func, params = self.parse_params_in_action(candidate)
+                    canonical = self._canonical_action(func, params)
+                    if canonical in allowed_set:
+                        filtered.append(canonical)
+                ml_action_list = filtered
+        # Chef's "plan" should be executable by Chef, not a request for the Assistant.
+        if self.actor == "chef":
+            ml_action_list = [a for a in ml_action_list if not a.strip().startswith("request(")]
+        ml_action = ""
+        for candidate in ml_action_list:
+            if any(s in candidate for s in ["accept", "deny", "clarify"]):
+                continue
+            ml_action = candidate
+            break
         if ml_action == "":
             ml_action = "wait(1)"
             ml_action_list = ["wait(1)"]
@@ -1616,6 +1737,373 @@ class LLMAgents(LLMPair):
             )
         # print(f"{self.name}: {ml_action}")
         return ml_action if add_to_queue else ml_action_list
+
+    def _cook_remaining_ticks(self, pot_name, state):
+        """
+        Return how many cook() interactions are still needed for this pot
+        to reach 'ready' for the current order.
+        """
+        try:
+            utensil_type = pot_name[:-1]  # 'pot0' -> 'pot'
+            # figure out which mid-ingredient is in the pot to read the cook_time
+            middle_ingredient_dict = self.mdp.recipe_config["recipes"][utensil_type]
+            first_item = self.mdp.utensil_state_dict[pot_name]["soup"].state[0]
+            # pick the matching mid-ingredient key
+            middle_key = ""
+            for k in middle_ingredient_dict.keys():
+                if isinstance(first_item, (list, tuple)):
+                    if first_item and first_item[0] in k:
+                        middle_key = k
+                        break
+                else:
+                    if first_item in k:
+                        middle_key = k
+                        break
+            # default to 3 if we can't detect (safe for boiled_egg)
+            recipe_cook_time = middle_ingredient_dict.get(middle_key, {}).get("cook_time", 3)
+            now_cook_time = 0
+            # if already cooking, pull elapsed ticks (index 2) from soup.state
+            if pot_name in self.mdp.get_utensil_states(state).get("cooking", []):
+                now_cook_time = self.mdp.utensil_state_dict[pot_name]["soup"].state[2]
+            remaining = max(int(recipe_cook_time) - int(now_cook_time), 0)
+            return remaining
+        except Exception:
+            return 3  # conservative default for simple recipes like boiled_egg
+
+    def _canonical_action(self, func, params):
+        func = (func or "").lower()
+        normalized_params = []
+        for p in params or []:
+            normalized_params.append(
+                re.sub(r"[^a-z0-9_]", "", p.lower())
+            )
+        if normalized_params:
+            return f"{func}({','.join(normalized_params)})"
+        return f"{func}()"
+
+    def _normalize_action_string(self, action):
+        action = action.strip()
+        func, params = self.parse_params_in_action(action)
+        return self._canonical_action(func, params)
+
+    def get_reference_allowed_actions(self):
+        order = getattr(self, "order", "")
+        if not order:
+            return None
+        if order in self.reference_actions_cache:
+            cache = self.reference_actions_cache[order]
+            return cache.get("allowed")
+        pattern = f"*_{order}_ref.txt"
+        files = glob.glob(os.path.join(PROMPT_DIR, "reference", pattern))
+        if not files:
+            self.reference_actions_cache[order] = {"allowed": None, "sequence": None}
+            return None
+        try:
+            with open(files[0], "r") as f:
+                reference_data = json.load(f)
+        except Exception:
+            self.reference_actions_cache[order] = {"allowed": None, "sequence": None}
+            return None
+        reference_key = next(iter(reference_data.keys()), None)
+        if reference_key is None:
+            self.reference_actions_cache[order] = {"allowed": None, "sequence": None}
+            return None
+        action_map = {}
+        sequence_map = {}
+        for agent_key, actions in reference_data[reference_key].items():
+            try:
+                agent_idx = int(agent_key.split("_")[-1])
+            except (ValueError, IndexError):
+                continue
+            canonical_set = set()
+            for act in actions:
+                func, params = self.parse_params_in_action(act)
+                canonical_set.add(self._canonical_action(func, params))
+            action_map[agent_idx] = canonical_set
+            sequence_map[agent_idx] = actions
+        self.reference_actions_cache[order] = {
+            "allowed": action_map,
+            "sequence": sequence_map,
+        }
+        return action_map
+
+    def get_reference_sequence_map(self):
+        order = getattr(self, "order", "")
+        if not order:
+            return None
+        cache = self.reference_actions_cache.get(order)
+        if cache and cache.get("sequence") is not None:
+            return cache["sequence"]
+        self.get_reference_allowed_actions()
+        cache = self.reference_actions_cache.get(order)
+        return cache["sequence"] if cache else None
+
+    def _get_counter_item_for_chef(self, state):
+        if "X" not in self.mdp.terrain_pos_dict:
+            return None
+        counter_objects = self.mdp.get_counter_objects_dict(
+            state, list(self.mdp.terrain_pos_dict["X"])
+        )
+        for obj in counter_objects.values():
+            if obj == " " or obj is None:
+                continue
+            item = obj
+            if isinstance(item, (list, tuple)):
+                if not item:
+                    continue
+                item = item[-1]
+            name = getattr(item, "name", None)
+            if name:
+                return name.lower()
+            if isinstance(item, str):
+                return item.lower()
+        return None
+
+    def _select_primary_pot(self):
+        if hasattr(self.mdp, "utensil_list_chef") and self.mdp.utensil_list_chef:
+            return self.mdp.utensil_list_chef[0]
+        for utensil in self.mdp.utensil_list:
+            if utensil.lower().startswith("pot"):
+                return utensil
+        return None
+
+    def _get_cooked_item_name(self):
+        return self.order.lower() if self.order else None
+
+    def initialize_reference_plan(self):
+        sequence_map = self.get_reference_sequence_map()
+        seq = sequence_map.get(self.agent_index) if sequence_map else None
+        self.reference_plan = []
+        self.reference_index = 0
+        self.executing_reference_step = None
+        self.using_reference = False
+        self._clear_action_queue()
+        if not seq:
+            return
+        normalized_seq = [
+            self._normalize_action_string(act)
+            for act in seq
+            if isinstance(act, str) and act.strip() != ""
+        ]
+        if not normalized_seq:
+            return
+        self.reference_plan = normalized_seq
+        self.reference_plan_order = self.order
+        self.using_reference = True
+
+    def _clear_action_queue(self):
+        while not self.action_wait_parse.empty():
+            self.action_wait_parse.get()
+
+    def _get_held_object_name(self, player):
+        if not player.has_object():
+            return None
+        obj = player.get_object()
+        name = getattr(obj, "name", None)
+        if name:
+            return name.lower()
+        return str(obj).lower()
+
+    def _egg_on_counter(self, state) -> bool:
+        """
+        Return True only if there is an egg on a counter that THIS agent can
+        actually reach (path-valid motion goal).
+        """
+        try:
+            counter_positions = list(self.mdp.terrain_pos_dict.get("X", []))
+            if not counter_positions:
+                return False
+
+            # What's on each counter cell right now
+            counter_objs = self.mdp.get_counter_objects_dict(state, counter_positions)
+
+            # My current start (pos, orientation)
+            my_start = state.players_pos_and_or[self.agent_index]
+
+            # Keep only counters that I can reach (via some motion goal)
+            reachable_positions = []
+            for pos in counter_positions:
+                goals = self.mlam._get_ml_actions_for_positions([pos]) or []
+                if any(self.mlam.motion_planner.is_valid_motion_start_goal_pair(my_start, g)
+                       for g in goals):
+                    reachable_positions.append(pos)
+
+            # Is there an egg on any reachable counter?
+            for pos in reachable_positions:
+                obj = counter_objs.get(pos, " ")
+                if obj in (" ", None):
+                    continue
+                item = obj
+                if isinstance(item, (list, tuple)) and item:
+                    item = item[-1]
+                name = getattr(item, "name", item)
+                if isinstance(name, str) and "egg" in name.lower():
+                    return True
+
+            return False
+        except Exception:
+            # Never claim True by default — that causes early, impossible pickups
+            return False
+
+    def _handoff_counter_goals(self, state):
+        """
+        Return motion goals for counter cells that are reachable by BOTH agents
+        (not necessarily simultaneously standing there; just path-valid for each).
+        Used when "shared" counters are not immediately available.
+        """
+        all_counters = list(self.mdp.terrain_pos_dict.get("X", []))
+        if not all_counters:
+            return []
+
+        me = self.agent_index
+        other = 1 - me
+        my_start = state.players_pos_and_or[me]
+        other_start = state.players_pos_and_or[other]
+
+        goals_out = []
+        for pos in all_counters:
+            goals = self.mlam._get_ml_actions_for_positions([pos]) or []
+            if not goals:
+                continue
+            me_ok = any(self.mlam.motion_planner.is_valid_motion_start_goal_pair(my_start, g) for g in goals)
+            other_ok = any(self.mlam.motion_planner.is_valid_motion_start_goal_pair(other_start, g) for g in goals)
+            if me_ok and other_ok:
+                goals_out.extend(goals)
+        return goals_out
+
+
+    def chef_heuristic_action(self, state):
+        if self.actor != "chef" or not self.trace:
+            return None
+
+        player = state.players[self.agent_index]
+        utensil_state = self.mdp.get_utensil_states(state)
+        pot_target = self._select_primary_pot()
+        if pot_target is None:
+            return None
+
+        held_name = self._get_held_object_name(player)
+
+        # 0) If already holding the finished item -> deliver now
+        if held_name and ( (self.order and self.order.lower() in held_name) or "boiled" in held_name ):
+            self._clear_action_queue()
+            return "deliver_soup()"
+
+        # 1) If pot is ready -> pick up cooked item and deliver
+        if pot_target in utensil_state.get("ready", []):
+            cooked_name = self._get_cooked_item_name()
+            if cooked_name and not player.has_object():
+                self._clear_action_queue()
+                self.action_wait_parse.put("deliver_soup()")
+                return f"pickup({cooked_name},{pot_target})"
+            # (rare) if holding cooked already
+            if held_name and "boiled" in held_name:
+                self._clear_action_queue()
+                return "deliver_soup()"
+
+        # 2) If pot is empty and an egg is staged on a counter, Chef should pick it up.
+        if (pot_target in utensil_state.get("empty", [])) and (not player.has_object()) and self._egg_on_counter(state):
+            self._clear_action_queue()
+            return "pickup(egg,counter)"
+
+        # 3) If holding egg and pot is empty -> load pot and queue ALL cooks
+        if held_name and "egg" in held_name and pot_target in utensil_state.get("empty", []):
+            self._clear_action_queue()
+            remaining = self._cook_remaining_ticks(pot_target, state)
+            if remaining <= 0:
+                remaining = 3  # safe default for boiled egg
+            for _ in range(remaining):
+                self.action_wait_parse.put(f"cook({pot_target})")
+            return f"put_obj_in_utensil({pot_target})"
+
+        # 4) If pot is already cooking and Chef has free hands -> keep cooking to completion
+        if (pot_target in utensil_state.get("cooking", [])) and (not player.has_object()):
+            remaining = self._cook_remaining_ticks(pot_target, state)
+            if remaining > 0:
+                self._clear_action_queue()
+                # do one cook now, queue the rest
+                for _ in range(max(remaining - 1, 0)):
+                    self.action_wait_parse.put(f"cook({pot_target})")
+                return f"cook({pot_target})"
+
+        # 5) If Chef has empty hands, but no egg is staged and pot is empty:
+        #    ask Assistant to fetch & stage the egg (Chef never asks Assistant to use the pot)
+        if (not player.has_object()) and (pot_target in utensil_state.get("empty", [])) and (not self._egg_on_counter(state)):
+            # Deconflicted, passive: request staging only
+            return "request('pickup(egg, ingredient_dispenser)'); request('place_obj_on_counter()')"
+
+        # Otherwise do nothing this tick
+        return None
+
+    def advance_reference_plan(self):
+        if not self.using_reference:
+            self.executing_reference_step = None
+            return
+        if (
+            self.executing_reference_step is not None
+            and self.executing_reference_step == self.reference_index
+        ):
+            self.reference_index += 1
+        self.executing_reference_step = None
+        if self.reference_index >= len(self.reference_plan):
+            self.using_reference = False
+
+    def convert_request_to_self_action(self, request_action):
+        """
+        Convert a request(...) into a direct action when the operation is one
+        this agent can and should execute on its own.
+        """
+        match = re.match(r"request\(['\"](.+?)['\"]\)", request_action.strip())
+        if not match:
+            return None
+        operation = match.group(1).strip()
+        func, params = self.parse_params_in_action(operation)
+        canonical = self._canonical_action(func, params)
+        allowed_map = self.get_reference_allowed_actions()
+        if allowed_map is not None:
+            allowed_set = allowed_map.get(self.agent_index)
+            if allowed_set is not None and canonical not in allowed_set:
+                return None
+        if self.actor == "assistant":
+            self_executable = {
+                "pickup",
+                "cut",
+                "stir",
+                "place_obj_on_counter",
+                "wait",
+            }
+            if func not in self_executable:
+                return None
+            if func == "pickup":
+                if len(params) != 2:
+                    return None
+                _, location = params
+                location = location.lower()
+                accessible_utensils = set(
+                    u.lower() for u in self.mdp.utensil_list_assist
+                )
+                if (
+                    location in accessible_utensils
+                    or "counter" in location
+                    or location in ["ingredient_dispenser", "dish_dispenser"]
+                ):
+                    return canonical
+                return None
+            if func in {"cut", "stir"}:
+                if not params:
+                    return None
+                target = params[0].lower()
+                accessible_utensils = set(
+                    u.lower() for u in self.mdp.utensil_list_assist
+                )
+                if target in accessible_utensils:
+                    return canonical
+                return None
+            if func == "place_obj_on_counter":
+                return canonical
+            if func == "wait":
+                return canonical
+        return None
 
     ##################
     """
@@ -1961,8 +2449,13 @@ class LLMAgents(LLMPair):
                 state, self.parse_action_params[0], self.agent_index
             )
         elif "place_obj_on_counter" in self.current_ml_action:
+            # Try truly shared empty counters first
             motion_goals = self.find_shared_counters(state, self.mlam)
             if len(motion_goals) == 0:
+                # NEW: fall back to counters that both agents can reach sequentially
+                motion_goals = self._handoff_counter_goals(state)
+            if len(motion_goals) == 0:
+                # Last resort: anywhere Assistant can place (old behavior)
                 motion_goals = am.place_obj_on_counter_actions(state)
         elif "fill_dish_with_food" in self.current_ml_action:
             motion_goals = am.go_to_utensil_actions(

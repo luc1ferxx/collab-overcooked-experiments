@@ -97,7 +97,7 @@ TOKEN_LIMIT_TABLE = {
     "llama3:70b-instruct-fp16": 4096,
 }
 sys.path.append(os.getcwd())
-EMBEDDING_MODEL = "text-embedding-3-small"
+EMBEDDING_MODEL = "disabled-embedding-model"
 
 
 class Module(object):
@@ -434,9 +434,7 @@ COOKING STEPs:
         while not get_response:
             try:
                 client = OpenAI(api_key=key)
-                response = client.embeddings.create(
-                    model=EMBEDDING_MODEL, input=[input]
-                )
+                response = None  # disabled (no-op)
                 get_response = True
             except Exception as e:
                 rprint("[red][OPENAI ERROR][/red]:", e)
@@ -466,29 +464,34 @@ COOKING STEPs:
 
 
 def if_two_sentence_similar_meaning(key, proxy, sentence1, sentence2):
-    with open(gpt4_key_file, "r") as f:
-        context = f.read()
-    key = context.split("\n")[0]
-    openai.api_key = key
-    if sentence1 == "":
-        sentence1 = " "
-    if sentence2 == "":
-        sentence2 = " "
-    get_response = False
-    while not get_response:
-        try:
-            client = OpenAI(api_key=key)
-            response = client.embeddings.create(
-                model=EMBEDDING_MODEL, input=[sentence1, sentence2]
-            )
-            get_response = True
-        except Exception as e:
-            rprint("[red][OPENAI ERROR][/red]:", e)
-            time.sleep(1)
-    embedding_1 = response.data[0].embedding
-    embedding_2 = response.data[1].embedding
-    score = 1 - spatial.distance.cosine(embedding_1, embedding_2)
-    if score > 0.9:
-        return True
-    else:
-        return False
+    # Local semantic match with NO network calls.
+    # Returns True if cosine similarity >= threshold.
+    # Falls back to a simple token Jaccard if sentence-transformers isn't available.
+
+    # Try to pull the first two positional args generically (so we don't depend on original param names)
+    _locals = dict(locals())
+    # Keep only original parameters (exclude names we introduce later)
+    _param_items = [(k, _locals[k]) for k in list(_locals.keys())]
+
+    # First two params are compared sentences
+    _sent_a = _param_items[0][1] if len(_param_items) > 0 else ""
+    _sent_b = _param_items[1][1] if len(_param_items) > 1 else ""
+
+    # Optional threshold param if it exists; otherwise default to 0.8
+    _threshold = _locals.get("threshold", 0.8)
+
+    try:
+        from sentence_transformers import SentenceTransformer
+        import numpy as np
+        import os
+        _model_name = os.getenv("SBERT_MODEL", "all-MiniLM-L6-v2")
+        _m = SentenceTransformer(_model_name)
+        _emb = _m.encode([str(_sent_a), str(_sent_b)], normalize_embeddings=True)
+        _sim = float((_emb[0] * _emb[1]).sum())  # cosine (since normalized)
+        return _sim >= _threshold
+    except Exception:
+        # Zero-dep fallback: rough token Jaccard similarity
+        A = set(str(_sent_a).lower().split())
+        B = set(str(_sent_b).lower().split())
+        _jac = len(A & B) / (len(A | B) + 1e-8)
+        return _jac >= 0.6

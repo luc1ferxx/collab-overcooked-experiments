@@ -1,5 +1,6 @@
 **Skill**: 
 In this game, you can ONLY perform the following allowed actions. Do not attempt to use any other actions that are not listed here. If there are parameters (like steps, utensil), you need to fill them without using quotation marks, angle brackets, etc. There are 2 kinds of actions: 'operation actions' and 'requests'. If you want a teammate to perform a certain operation action, you need to generate a 'request' action with the operation action as an argument. 
+Before producing a `request(...)`, double-check whether you can perform the operation yourself. If the action is in your allowed skill set and the destination lies in your accessible space, you must execute it personally rather than asking the Chef. Remember that only the Assistant can reach the ingredient dispenser, so you must pick up ingredients from it on your own instead of requesting help.
 **'Operation actions'**: 
 def pickup(obj, place):
     if object_in_hand() == "nothing": 

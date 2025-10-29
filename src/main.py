@@ -53,6 +53,22 @@ import socket
 from utils import make_agent, get_example_embedding, combine_statistic_dict
 
 
+def summarize_comm_tokens(team):
+    """
+    Aggregate communication token usage for each agent in the team.
+    """
+    per_agent = []
+    total_tokens = 0
+    total_turns = 0
+    for agent in team.agents:
+        usage = agent.get_comm_token_usage()
+        usage["agent_index"] = agent.agent_index
+        per_agent.append(usage)
+        total_tokens += usage["total_comm_tokens"]
+        total_turns += usage["num_comm_turns"]
+    return per_agent, total_tokens, total_turns
+
+
 def main(variant):
 
     layout = variant['layout']
@@ -197,10 +213,16 @@ def main(variant):
                 statistics_dict['total_action_list'][0] = team.agents[1].teammate_ml_actions
                 statistics_dict['total_action_list'][1] = team.agents[0].teammate_ml_actions
                 statistics_dict['content'].append(turn_statistics_dict_both)
+                per_agent_usage_step, team_tokens_step, team_turns_step = summarize_comm_tokens(team)
+                statistics_dict['communication_tokens_summary'] = {
+                    "team_total_tokens": team_tokens_step,
+                    "team_total_turns": team_turns_step,
+                    "per_agent": per_agent_usage_step,
+                }
                 #statistics_dict['end_time'] = time.strftime("%Y-%m-%d %H:%M:%S")
                 with open(filename, 'w') as f:
                     json.dump(statistics_dict,f,indent=4)
-                
+
                 if variant['test_mode'] == 'fix_task':
                     if reward != 0:
                         print("Task successed!")
@@ -213,9 +235,25 @@ def main(variant):
             if variant['gpt_model'] == "human":
                 for a in range(len(team.agents)):
                     output_to_port(f"agent{a}","Fail to finish task in time!",mission="fail",port=variant['local_server_api'])
+        per_agent_usage_final, team_tokens_final, team_turns_final = summarize_comm_tokens(team)
+        statistics_dict['communication_tokens_summary'] = {
+            "team_total_tokens": team_tokens_final,
+            "team_total_turns": team_turns_final,
+            "per_agent": per_agent_usage_final,
+        }
+        if variant['save']:
+            for agent in team.agents:
+                csv_path = os.path.join(save_dir, f"communication_tokens_agent{agent.agent_index}.csv")
+                agent.save_comm_tokens_csv(csv_path)
+            with open(filename, 'w') as f:
+                json.dump(statistics_dict, f, indent=4)
+        print("Communication token usage (episode summary):")
+        for usage in per_agent_usage_final:
+            print(f"  {usage['agent']} (agent{usage['agent_index']}): {usage['total_comm_tokens']} tokens across {usage['num_comm_turns']} turns")
+        print(f"  Team total: {team_tokens_final} tokens across {team_turns_final} turns\n")
         print(f"Episode {i+1}/{episode}: {r_total}\n====\n\n")
         results.append(r_total)
-   
+
     end_time = time.time()
     print(f"Cost time : {end_time - start_time:.3f}s-----\n\n")
 

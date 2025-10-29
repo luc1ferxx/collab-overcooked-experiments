@@ -41,7 +41,7 @@ gpt4_key_file = os.path.join(cwd, "openai_key.txt")
 REFERENCE_DIR = os.path.join(cwd, "prompts/reference")
 
 
-EMBEDDING_MODEL = "text-embedding-3-small"
+EMBEDDING_MODEL = "disabled-embedding-model"
 
 
 def get_embedding_from_openai(content):
@@ -55,7 +55,7 @@ def get_embedding_from_openai(content):
     while not get_response:
         try:
             client = OpenAI(api_key=openai.api_key)
-            response = client.embeddings.create(model=EMBEDDING_MODEL, input=[content])
+            response = None  # disabled (no-op)
             get_response = True
             time.sleep(0.5)
         except Exception as e:
