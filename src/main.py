@@ -73,7 +73,7 @@ def write_comm_tokens_to_log(save_dir, per_agent_usage, team_tokens, team_turns)
     Append the episode's communication token summary to a plain-text log.
     """
     os.makedirs(save_dir, exist_ok=True)
-    run_ts = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    run_ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     log_path = os.path.join(save_dir, f"run_{run_ts}_.log")
 
     lines = ["Communication token usage (episode summary):"]
