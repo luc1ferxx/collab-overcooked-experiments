@@ -1,13 +1,14 @@
 import itertools, os, json, re, glob
 import csv
 from collections import defaultdict
-from typing import Union
+from typing import Union, List
 import numpy as np
 import pkg_resources
 from collections import deque
 import sys
 import copy
 from .modules import Module, statistics_dict, turn_statistics_dict
+from .discrete_comm import DiscreteCommManager, TOKEN_DICTIONARY
 from overcooked_ai_py.mdp.actions import Action, Direction
 from overcooked_ai_py.planning.search import find_path
 from overcooked_ai_py.planning.search import get_intersect_counter
@@ -93,6 +94,7 @@ class LLMAgents(LLMPair):
         debug_mode="N",
         agent_index=None,
         outdir=None,
+        use_discrete_comm=True,
     ):
         super().__init__(
             model=model, model_dirname=model_dirname, local_server_api=local_server_api
@@ -136,6 +138,7 @@ class LLMAgents(LLMPair):
         self.order = ""
         self.failed_history = []
         self.state = None
+        self.use_discrete_comm = use_discrete_comm
         # dict to record if the error in T timestamp  was corrected, or just 'wait(1)'
         self.error_correct = {}
         turn_statistics_dict_cp = copy.deepcopy(turn_statistics_dict)
@@ -147,6 +150,8 @@ class LLMAgents(LLMPair):
         # optional per-turn log: (timestep, tokens, who, utterance)
         self.comm_token_log = []   # list[dict]
         # === END TOKEN-METER ===
+        self.comm_manager = DiscreteCommManager(self)
+        self.discrete_comm_trace: List[dict] = []
         
         
     def get_comm_token_usage(self):
@@ -245,7 +250,7 @@ class LLMAgents(LLMPair):
         assistant_workflow = """The usual workflow for the Assistant is:
 - 1. Ask the Chef for guidance when you feel uncertain about the next step, but once the Chef assigns you a task you must execute it immediately instead of asking again.
 - 2. Perform every operation that is inside your accessible space yourself (ingredient dispenser, dish dispenser, chopping boards, blender, counters). Never create a `request(...)` for an action you can execute; reserve requests only for tasks that you physically cannot perform.
-- 3. Follow the Chef’s instructions unless they are incorrect. For example, if the Chef requests a utensil that is not available on your side, you should refuse and inform him."""
+- 3. Follow the Chef's instructions unless they are incorrect. For example, if the Chef requests a utensil that is not available on your side, you should refuse and inform him."""
         #  -1. Communicate with the chef for instruction and don't make your own plans.\n\
         #  -2. Follow the instructions given by Chef unless his instruction is wrong. For example, if the utensil he wants you to use in not in your side, you should refuse and tell him.\n"
         # load recipe
@@ -279,6 +284,10 @@ class LLMAgents(LLMPair):
             "{recipe}",
             recipe_content if recipe_content != "" else "You do not have the recipe\n",
         )
+        if self.use_discrete_comm:
+            self.planner.instruction_head_list[0]["content"] += (
+                "\n\n" + TOKEN_DICTIONARY + "\nPrefer communicating with these tokens when appropriate."
+            )
         return self.planner.instruction_head_list[0]["content"]
 
     def reset(self, teammate: LLMPair):
@@ -294,6 +303,16 @@ class LLMAgents(LLMPair):
         self.teammate_intentions_dict = {}
 
         self.teammate = teammate
+        self.comm_manager.reset()
+        if hasattr(self.teammate, "comm_manager"):
+            self.comm_manager.set_teammate(self.teammate.name)
+        self.discrete_comm_trace.clear()
+        try:
+            self.turn_statistics_dict["statistical_data"]["communication"][
+                self.agent_index
+            ]["discrete_trace"] = self.discrete_comm_trace
+        except Exception:
+            pass
         # === BEGIN TOKEN-METER RESET ===
         self.comm_token_total = 0
         self.comm_token_log.clear()
@@ -1101,6 +1120,36 @@ class LLMAgents(LLMPair):
         communication_turn = 0
         last_message = ""
 
+        if not self.use_discrete_comm and not getattr(
+            self.teammate, "use_discrete_comm", True
+        ):
+            return self._legacy_communication(message, state)
+
+        if self.use_discrete_comm:
+            initial_self_decision = self.comm_manager.begin_turn(state)
+        else:
+            initial_self_decision = self.comm_manager.force_llm("disabled_self")
+
+        if getattr(self.teammate, "use_discrete_comm", True):
+            initial_team_decision = self.teammate.comm_manager.begin_turn(state)
+        else:
+            initial_team_decision = self.teammate.comm_manager.force_llm("disabled_team")
+
+        if (
+            initial_self_decision.mode == "silent"
+            and initial_team_decision.mode == "silent"
+        ):
+            silent_response = self.comm_manager.build_silent_response()
+            self.comm_manager.record_response(state, silent_response)
+            self.teammate.comm_manager.record_response(state, silent_response)
+            plan = self.parse_response(silent_response, "plan")
+            if plan == "":
+                plan = "wait(1)"
+            return plan
+
+        pending_self_decision = initial_self_decision
+        pending_team_decision = initial_team_decision
+
         print("\n\n>>>>>>>>>>>>>>>>>>Begin communication<<<<<<<<<<<<<\n")
         while self.end_talk is False:
             communication_turn += 1
@@ -1117,8 +1166,85 @@ class LLMAgents(LLMPair):
                 + self.teammate.planner.wong_message_prompt
             )
             # teammate must reply
+            team_decision = pending_team_decision
+            if team_decision is None:
+                if getattr(self.teammate, "use_discrete_comm", True):
+                    team_decision = self.teammate.comm_manager.begin_turn(state)
+                else:
+                    team_decision = self.teammate.comm_manager.force_llm(
+                        "disabled_team_loop"
+                    )
             self.end_talk, team_response = self.teammate.answer(
-                format_you_response, "team", state
+                format_you_response, "team", state, decision=team_decision
+            )
+            pending_team_decision = None
+            print(f"Answer of {self.teammate.name}" + ":\n")
+            print(team_response + "\n\n")
+
+            print(f"Input for {self.name}" + ":\n")
+            format_team_response = self.message_formate_control(
+                "asker",
+                self.planner.dialog_history_list,
+                self.teammate.planner.dialog_history_list,
+            )
+            self.state_prompt = self.generate_state_prompt(state)
+            print(
+                self.state_prompt
+                + format_team_response
+                + self.planner.wong_message_prompt
+            )
+            last_message = format_team_response + "\n\n"
+            self.pre_message = last_message
+            self_decision = pending_self_decision
+            if self_decision is None:
+                if self.use_discrete_comm:
+                    self_decision = self.comm_manager.begin_turn(state)
+                else:
+                    self_decision = self.comm_manager.force_llm("disabled_self_loop")
+            self.end_talk, you_response = self.answer(
+                format_team_response, "you", state, decision=self_decision
+            )
+            pending_self_decision = None
+            if self.end_talk is False:
+                print(f"Answer of {self.name}" + ":\n")
+            else:
+                print(
+                    f">>>>>>>>>>>>>>>>>>>>{self.name} decide to make action:<<<<<<<<<<<<<<<<<\n"
+                )
+            print(you_response + "\n\n\n")
+        print("\n\n>>>>>>>>>>>>>>>>>>Finish communication<<<<<<<<<<<<<\n")
+        # parse
+        plan = self.parse_response(you_response, "plan")
+        if plan == "":
+            print("You have not make plan last time.\n")
+            plan, _ = self.important_part_no_create(1, "plan", you_response)
+        return plan
+
+    def _legacy_communication(self, message, state):
+        # Original communication loop without discrete protocol
+        self.end_talk = False
+        you_response = message
+        team_response = ""
+        communication_turn = 0
+        last_message = ""
+
+        print("\n\n>>>>>>>>>>>>>>>>>>Begin communication<<<<<<<<<<<<<\n")
+        while self.end_talk is False:
+            communication_turn += 1
+            print(f"Input for {self.teammate.name}" + ":\n")
+            format_you_response = self.teammate.message_formate_control(
+                "answer",
+                self.teammate.planner.dialog_history_list,
+                self.planner.dialog_history_list,
+            )
+            self.teammate.state_prompt = self.teammate.generate_state_prompt(state)
+            print(
+                self.teammate.state_prompt
+                + format_you_response
+                + self.teammate.planner.wong_message_prompt
+            )
+            self.end_talk, team_response = self.teammate.answer(
+                format_you_response, "team", state, decision=None
             )
             print(f"Answer of {self.teammate.name}" + ":\n")
             print(team_response + "\n\n")
@@ -1139,7 +1265,7 @@ class LLMAgents(LLMPair):
             self.pre_message = last_message
 
             self.end_talk, you_response = self.answer(
-                format_team_response, "you", state
+                format_team_response, "you", state, decision=None
             )
             if self.end_talk is False:
                 print(f"Answer of {self.name}" + ":\n")
@@ -1149,7 +1275,6 @@ class LLMAgents(LLMPair):
                 )
             print(you_response + "\n\n\n")
         print("\n\n>>>>>>>>>>>>>>>>>>Finish communication<<<<<<<<<<<<<\n")
-        # parse
         plan = self.parse_response(you_response, "plan")
         if plan == "":
             print("You have not make plan last time.\n")
@@ -1167,15 +1292,20 @@ class LLMAgents(LLMPair):
         )
         retry_num_max = retry_num
         final_response = response
+        base_prompt = getattr(self.planner, "base_user_prompt", "")
         while retry_num > 0:
             # retry query
+            if not base_prompt:
+                base_prompt = self.planner.current_user_message["content"]
             self.planner.current_user_message = {
                 "role": "user",
-                "content": prompt
-                + self.planner.current_user_message["content"]
-                + "\n\nYour last response is :"
-                + response
-                + "\n\n<END>Now please return correct answer with your loss part.",
+                "content": (
+                    prompt
+                    + base_prompt
+                    + "\n\nYour last response is :"
+                    + response
+                    + "\n\n<END>Now please return correct answer with your loss part."
+                ),
             }
             # print(self.planner.current_user_message)
             response, correction_tokens = self.planner.query(
@@ -1216,16 +1346,51 @@ class LLMAgents(LLMPair):
         return parse_result, final_response
 
     # It is used to give organized messages to gpt and organize the generated analysis, talk and other information
-    def answer(self, message, role, state):
+    def answer(self, message, role, state, decision=None):
         self.state_prompt = self.generate_state_prompt(state)
-        self.planner.current_user_message = {
-            "role": "user",
-            "content": self.state_prompt + message,
-        }
-        response, tokens_num = self.planner.query(
-            key=self.openai_api_key(), proxy=self.proxy, stop="Scene", trace=True
-        )
+        if not self.use_discrete_comm:
+            decision = None
+        else:
+            decision = decision or self.comm_manager.begin_turn(state)
+
+        if decision and decision.mode == "silent":
+            response = self.comm_manager.build_silent_response()
+            tokens_num = 0
+            self.comm_manager.record_response(state, response)
+        elif self.use_discrete_comm and decision and decision.tokens and not decision.fallback:
+            response = self.comm_manager.build_token_response()
+            tokens_num = 0
+            self.comm_manager.record_response(state, response)
+        else:
+            base_prompt = message
+            if self.use_discrete_comm and decision:
+                prepared_prompt = self.comm_manager.prepare_prompt(
+                    self.state_prompt, base_prompt, role
+                )
+            else:
+                prepared_prompt = self.state_prompt + base_prompt
+            self.planner.current_user_message = {
+                "role": "user",
+                "content": prepared_prompt,
+            }
+            self.planner.base_user_prompt = prepared_prompt
+            response, tokens_num = self.planner.query(
+                key=self.openai_api_key(), proxy=self.proxy, stop="Scene", trace=True
+            )
+            if self.use_discrete_comm and decision:
+                self.comm_manager.record_response(state, response)
+        if self.use_discrete_comm and decision and decision.tokens:
+            token_str = " ".join(decision.tokens)
+            response_lines = response.splitlines()
+            for idx, line in enumerate(response_lines):
+                if line.lower().startswith(f"{self.name.lower()} say"):
+                    response_lines[idx] = f"{self.name} say: {token_str}"
+            response = "\n".join(response_lines)
         parse_analysis = self.parse_response(response, "analysis")
+        parse_plan = self.parse_response(response, "plan")
+        if self.use_discrete_comm:
+            parse_analysis = self._clip_sentence(parse_analysis)
+            parse_plan = self._clip_plan(parse_plan)
         # Analsysis did not generate error handling:
         if parse_analysis == "":
             print("Do not create analysis", response)
@@ -1260,9 +1425,9 @@ class LLMAgents(LLMPair):
             self.turn_statistics_dict["content"]["content"][communication_index].append(
                 {
                     "agent": self.agent_index,
-                    "analysis": self.parse_response(response, "analysis"),
+                    "analysis": parse_analysis,
                     "say": parse_talk,
-                    "plan": self.parse_response(response, "plan"),
+                    "plan": parse_plan,
                 }
             )
         else:
@@ -1285,9 +1450,9 @@ class LLMAgents(LLMPair):
             ].append(
                 {
                     "agent": self.agent_index,
-                    "analysis": self.parse_response(response, "analysis"),
+                    "analysis": parse_analysis,
                     "say": parse_talk,
-                    "plan": self.parse_response(response, "plan"),
+                    "plan": parse_plan,
                 }
             )
 
@@ -1309,7 +1474,7 @@ class LLMAgents(LLMPair):
 
         # check if there is action
         # nothing did not produce an action
-        new_plan = self.parse_response(response, "plan")
+        new_plan = parse_plan
         pattern = r"(?i)nothing"
         matches = re.findall(pattern, new_plan)
         if matches:
@@ -1432,6 +1597,7 @@ class LLMAgents(LLMPair):
             "role": "user",
             "content": self.state_prompt + message + failure_message + success_message,
         }
+        self.planner.base_user_prompt = self.planner.current_user_message["content"]
         print(f"rethink input content: {self.planner.current_user_message['content']}")
         response, correction_tokens = self.planner.query(
             key=self.openai_api_key(),
@@ -1545,6 +1711,7 @@ class LLMAgents(LLMPair):
             }
             self.state_prompt = state_prompt
             self.planner.current_user_message = state_message
+            self.planner.base_user_prompt = state_message["content"]
             # print("history information")
             print(f"{state_message['content']}")
             # statistic
@@ -2561,3 +2728,26 @@ class LLMAgents(LLMPair):
         )
 
         return action_plan, plan_cost
+
+    def _clip_sentence(self, text: str, max_chars: int = 160) -> str:
+        if not text:
+            return text
+        text = text.strip()
+        if not text:
+            return text
+        sentences = re.split(r"(?<=[.!?])\s+", text)
+        first = sentences[0]
+        if len(first) > max_chars:
+            first = first[:max_chars].rstrip()
+            if not first.endswith("."):
+                first += "..."
+        return first
+
+    def _clip_plan(self, plan_text: str, max_actions: int = 2) -> str:
+        if not plan_text:
+            return plan_text
+        actions = [a.strip() for a in plan_text.split(";") if a.strip()]
+        if not actions:
+            return plan_text
+        actions = actions[:max_actions]
+        return ";".join(actions)

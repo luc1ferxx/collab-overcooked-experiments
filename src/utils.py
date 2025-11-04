@@ -41,7 +41,16 @@ def make_agent(alg: str, mdp, layout, **gptargs):
             mlam = MediumLevelPlanner.from_pickle_or_compute(
                 mdp, MLAM_PARAMS, force_compute=True
             ).ml_action_manager
-            agent = LLMAgents(mlam, layout, **gptargs)
+            use_discrete_comm = gptargs.pop("use_discrete_comm", None)
+            if use_discrete_comm is None:
+                flag = os.environ.get("COLLAB_USE_DISCRETE_COMM")
+                if flag is None:
+                    use_discrete_comm = True
+                else:
+                    use_discrete_comm = flag.lower() not in ("0", "false", "no")
+            agent = LLMAgents(
+                mlam, layout, use_discrete_comm=use_discrete_comm, **gptargs
+            )
 
         elif alg == "Greedy":
             mlam = MediumLevelPlanner.from_pickle_or_compute(

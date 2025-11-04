@@ -128,6 +128,7 @@ class Module(object):
         # save the dialog_history of meetting first failture
         self.dialog_history_list_storage = []
         self.current_user_message = None
+        self.base_user_prompt = ""
         self.cache_list = None
         self.experience = []
         self.embedding = None
