@@ -1,8 +1,10 @@
 timestep,agent,tokens,utterance
-5,Assistant,162,Assistant says: Request the chef to boil the egg and place the cooked egg on the counter.
-6,Assistant,151,"""Chef, could you please pick up a dish from the dish dispenser? I'm not sure whether to place this egg on the pot or the oven. Please clarify."""
-7,Assistant,106,Request: Please place the egg in the pot0. I will start boiling it.
-8,Assistant,124,Request the Chef to put the egg in the pot.
-10,Assistant,158,"S1(Assistant) Clarify, the pot0 is empty. What should I do next?"
-11,Assistant,126,"Chef, could you please tell me the recipe for the boiled egg we need to serve? I'm not sure what the next steps are."
-13,Assistant,214,"Chef, please place the boiled egg in a dish so I can pick it up and deliver it to the serving location. Then, I will need a clean dish from the dish dispenser. After that, I will place the boiled egg on the counter and pick up the dish with the boiled egg. Once I have the dish with the boiled egg, I will deliver it to the serving location."
+5,Assistant,159,"Chef, please pick up a pot from the counter so I can cook the egg in the blender."
+6,Assistant,142,Request to move the egg from the counter to the blender for boiling. Please pick up the egg from the counter once you receive this message.
+7,Assistant,127,"Chef, please place the egg into the pot to cook it. [BOILED_EGG]"
+8,Assistant,132,"""Chef, could you please specify which pot you'd like me to use for the boiled egg?"""
+9,Assistant,134,"<Assistant> says: Please cook the egg in the pot. Once it's ready, could you hand it off to me?"
+10,Assistant,171,I will chop the egg on the chopping board. Please update the plan once you are ready with the next steps.
+11,Assistant,128,"""I need to pick up the boiled egg from the counter and deliver it to the serving location."""
+12,Assistant,168,"""I will chop the boiled egg and make a puree in the blender. Please fill a dish with the puree and then deliver the soup."""
+13,Assistant,101,Requesting you to deliver the boiled egg to the serving location.
