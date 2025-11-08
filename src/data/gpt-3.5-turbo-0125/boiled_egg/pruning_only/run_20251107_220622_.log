@@ -1,0 +1,5 @@
+Communication token usage (episode summary):
+Chef (agent0): 8855 tokens across 60 turns
+Assistant (agent1): 11840 tokens across 68 turns
+Team total: 20695 tokens across 128 turns
+

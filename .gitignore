@@ -129,7 +129,6 @@ dmypy.json
 
 
 
-*.log
 *.pth
 *.pdf
 *.pkl
@@ -137,6 +136,8 @@ dmypy.json
 **/.vscode/
 **/output/
 **/overcooked-demo-legacy/
+# Allow committed experiment logs
+!src/data/**/*.log
 
 output.txt
 
