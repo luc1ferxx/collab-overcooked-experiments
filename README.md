@@ -64,6 +64,34 @@ The final evaluation results are stored in `converted_data.csv`, with the follow
 - **initiate_collaboration:** The ability of the LLM-MAS (Multi-Agent System) to initiate collaboration.
 - **respond_collaboration:** The ability of the LLM-MAS to respond to collaboration.
 
+### Experiment Commands
+
+Free-form:
+
+```
+COLLAB_USE_DISCRETE_COMM=0 python main.py --horizon 30 --order boiled_egg \
+  --retrival_method recent_k --K 1 --gpt_model gpt-3.5-turbo-0125
+```
+
+Reduced:
+
+```
+COLLAB_USE_DISCRETE_COMM=1 python main.py --horizon 30 --order boiled_egg \
+  --retrival_method recent_k --K 1 --gpt_model gpt-3.5-turbo-0125
+```
+
+Always Talk:
+
+```
+COLLAB_USE_DISCRETE_COMM=0 python main.py --horizon 30 --order boiled_egg --retrival_method recent_k --K 1 --gpt_model gpt-3.5-turbo-0125 --comm_baseline always
+```
+
+Pruning Only:
+
+```
+COLLAB_USE_DISCRETE_COMM=0 python main.py --horizon 30 --order boiled_egg --retrival_method recent_k --K 1 --gpt_model gpt-3.5-turbo-0125 --comm_baseline pruning_only --pruning_similarity 0.8
+```
+
 ## Modify the Environment
 The environment settings and logic are stored in the `Collab-Overcooked/lib/overcooked_ai` folder. Layout files are stored in the `data/layouts` folder, while the environment logic is in the `mdp` folder. 
 
