@@ -7,10 +7,14 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path("src/data/gpt-3.5-turbo-0125")
+OUTPUT_DIR = Path(__file__).resolve().parent
 ORDERS = ["boiled_egg", "boiled_mushroom"]
 MODES = {
-    "baseline": "Baseline",
+    "baseline": "Free-form",
     "reduced": "Reduced",
+    "always": "Always Talk",
+    "deterministic": "Deterministic Chat",
+    "pruning_only": "Pruning Only",
 }
 
 OFFSETS = {
@@ -18,6 +22,22 @@ OFFSETS = {
     ("boiled_mushroom", "Baseline"):      (-10, 6),
     ("boiled_egg", "Reduced"):      (16, -10),
     ("boiled_mushroom", "Reduced"): (-14, -6),
+}
+
+TIMESTEP_OFFSETS = {
+    ("boiled_egg", "Free-form"): (12, 10, "left", "bottom"),
+    ("boiled_mushroom", "Free-form"): (70, -33, "right", "top"),
+    ("boiled_egg", "Always Talk"): (40, 33, "right", "top"),
+    ("boiled_egg", "Deterministic Chat"): (14, -8, "left", "bottom"),
+    ("boiled_egg", "Pruning Only"): (-18, 33, "right", "top"),
+}
+
+SUCCESS_OFFSETS = {
+    ("boiled_egg", "Free-form"): (-42, 10, "left", "bottom"),
+    ("boiled_mushroom", "Free-form"): (40, -18, "right", "top"),
+    ("boiled_egg", "Always Talk"): (70, 28, "right", "top"),
+    ("boiled_egg", "Deterministic Chat"): (14, -8, "left", "bottom"),
+    ("boiled_egg", "Pruning Only"): (-18, -16, "right", "top"),
 }
 
 def _annotate_point(ax, x, y, order, mode):
@@ -127,11 +147,11 @@ if not run_records:
 runs = pd.DataFrame(run_records).dropna(subset=["tokens"])
 if "prompt_tokens" in runs.columns:
     pass
-runs.to_csv("results_raw_runs.csv", index=False)
+runs.to_csv(OUTPUT_DIR / "results_raw_runs.csv", index=False)
 
 calls = pd.DataFrame(call_records)
 if not calls.empty:
-    calls.to_csv("call_tokens_raw.csv", index=False)
+    calls.to_csv(OUTPUT_DIR / "call_tokens_raw.csv", index=False)
 
 summary = (
     runs.groupby(["order", "mode"])
@@ -165,8 +185,8 @@ for metric in ["tokens", "turns", "timesteps"]:
     summary[f"{metric}_ci_low"] = summary[mean_col] - ci
     summary[f"{metric}_ci_high"] = summary[mean_col] + ci
 
-summary.to_csv("results_summary.csv", index=False)
-save_table_png(summary, "results_summary_table.png", title="Episode-level Metrics")
+summary.to_csv(OUTPUT_DIR / "results_summary.csv", index=False)
+save_table_png(summary, OUTPUT_DIR / "results_summary_table.png", title="Episode-level Metrics")
 
 # Welch-style differences between baseline and reduced (tokens & turns)
 diff_rows: list[dict] = []
@@ -204,8 +224,8 @@ for order in ORDERS:
 
 if diff_rows:
     diff_df = pd.DataFrame(diff_rows)
-    diff_df.to_csv("results_differences.csv", index=False)
-    save_table_png(diff_df, "results_differences_table.png", title="Baseline − Reduced (tokens / turns)")
+    diff_df.to_csv(OUTPUT_DIR / "results_differences.csv", index=False)
+    save_table_png(diff_df, OUTPUT_DIR / "results_differences_table.png", title="Free-form − Reduced (tokens / turns)")
 else:
     diff_df = pd.DataFrame()
 
@@ -234,8 +254,8 @@ if not calls.empty:
         )
         .reset_index()
     )
-    call_summary.to_csv("call_tokens_summary.csv", index=False)
-    save_table_png(call_summary, "call_tokens_summary_table.png", title="Per-call Token Diagnostics")
+    call_summary.to_csv(OUTPUT_DIR / "call_tokens_summary.csv", index=False)
+    save_table_png(call_summary, OUTPUT_DIR / "call_tokens_summary_table.png", title="Per-call Token Diagnostics")
 else:
     call_summary = pd.DataFrame()
 
@@ -245,15 +265,15 @@ ax = pivot_tokens.plot(kind="bar", figsize=(6, 4))
 ax.set_ylabel("Average LLM tokens per episode")
 ax.set_title("Communication cost by order / mode")
 plt.tight_layout()
-plt.savefig("results_tokens_bar.png", dpi=200)
+plt.savefig(OUTPUT_DIR / "results_tokens_bar.png", dpi=200)
 plt.close()
 
 pivot_turns = runs.pivot_table(index="order", columns="mode", values="turns", aggfunc="mean")
 ax = pivot_turns.plot(kind="bar", figsize=(6, 4))
-ax.set_ylabel("Average communication turns per episode")
+ax.set_ylabel("Avg communication turns / episode")
 ax.set_title("LLM calls by order / mode")
 plt.tight_layout()
-plt.savefig("results_turns_bar.png", dpi=200)
+plt.savefig(OUTPUT_DIR / "results_turns_bar.png", dpi=200)
 plt.close()
 
 if not calls.empty and not calls[calls["tokens"] > 0].empty:
@@ -274,7 +294,7 @@ if not calls.empty and not calls[calls["tokens"] > 0].empty:
         ax.set_ylabel("Tokens per LLM call")
         ax.set_title("Distribution of tokens per API call")
         plt.tight_layout()
-        plt.savefig("call_tokens_boxplot.png", dpi=200)
+        plt.savefig(OUTPUT_DIR / "call_tokens_boxplot.png", dpi=200)
         plt.close()
 
 # Trade-off scatter plots
@@ -286,25 +306,36 @@ ax = success_fig.add_subplot(1, 1, 1)
 ax.errorbar(
     summary["tokens_mean"],
     summary["success_rate"],
-    xerr=[summary["tokens_mean"] - summary["tokens_ci_low"], summary["tokens_ci_high"] - summary["tokens_mean"]],
+    xerr=[
+        summary["tokens_mean"] - summary["tokens_ci_low"],
+        summary["tokens_ci_high"] - summary["tokens_mean"],
+    ],
     fmt="o",
     capsize=4,
 )
 for _, row in summary.iterrows():
-    offsets = {
-        ("boiled_egg", "Baseline"):           (10, 6),
-        ("boiled_mushroom", "Baseline"):      (0, -10),
-        ("boiled_egg", "Reduced"):      (-12, -10),
-        ("boiled_mushroom", "Reduced"): (12, -10),
-    }
-    dx, dy = offsets.get((row["order"], row["mode"]), (12, 8))
+    offset = SUCCESS_OFFSETS.get((row["order"], row["mode"]))
+    if offset:
+        dx, dy, ha, va = offset
+    elif (row["order"], row["mode"]) == ("boiled_egg", "Reduced"):
+        dx, dy = (12, -20)
+        ha = "left"; va = "top"
+    elif (row["order"], row["mode"]) == ("boiled_mushroom", "Reduced"):
+        dx, dy = (12, 20)
+        ha = "left"; va = "top"
+    elif (row["order"], row["mode"]) == ("boiled_mushroom", "Free-form"):
+        dx, dy = (0, -10)
+        ha = "left"; va = "bottom"
+    else:
+        dx, dy = (12, 8)
+        ha = "left"; va = "bottom"
     ax.annotate(
         f"{row['order']}\n{row['mode']}",
         (row["tokens_mean"], row["success_rate"]),
         textcoords="offset points",
         xytext=(dx, dy),
-        ha="left" if dx > 0 else "right",
-        va="bottom" if dy > 0 else "top",
+        ha=ha,
+        va=va,
         fontsize=8,
         bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="0.7", alpha=0.9),
         arrowprops=dict(arrowstyle="-", lw=0.8, color="0.35"),
@@ -320,7 +351,7 @@ pad = 0.08 * (xmax - xmin if xmax > xmin else 1.0)
 ax.set_xlim(xmin - pad, xmax + pad)
 ax.margins(x=0.10, y=0.18)
 plt.tight_layout()
-success_fig.savefig("tradeoff_tokens_success.png", dpi=200)
+success_fig.savefig(OUTPUT_DIR / "tradeoff_tokens_success.png", dpi=200)
 plt.close(success_fig)
 
 if {"timesteps_mean", "timesteps_ci_low"}.issubset(summary.columns):
@@ -338,7 +369,10 @@ if {"timesteps_mean", "timesteps_ci_low"}.issubset(summary.columns):
         capsize=4,
     )
     for _, row in summary.iterrows():
-        if row["mode"] == "Reduced":
+        offset = TIMESTEP_OFFSETS.get((row["order"], row["mode"]))
+        if offset:
+            dx, dy, ha, va = offset
+        elif row["mode"] == "Reduced":
             if row["order"] == "boiled_egg":
                 dx, dy = (16, -10)
                 ha = "left";  va = "top"
@@ -373,22 +407,28 @@ if {"timesteps_mean", "timesteps_ci_low"}.issubset(summary.columns):
     ax.set_xlim(xmin - pad, xmax + pad)
     ax.margins(x=0.10, y=0.12)
     plt.tight_layout()
-    ts_fig.savefig("tradeoff_tokens_timesteps.png", dpi=200)
+    ts_fig.savefig(OUTPUT_DIR / "tradeoff_tokens_timesteps.png", dpi=200)
     plt.close(ts_fig)
 
-print("Saved per-run stats to results_raw_runs.csv")
+print(f"Saved per-run stats to {(OUTPUT_DIR / 'results_raw_runs.csv').as_posix()}")
 print(runs.head())
 
 print("\nSummary statistics (LaTeX/markdown ready):")
 print(summary.to_markdown(index=False, floatfmt=".2f"))
 
 if not diff_df.empty:
-    print("\nToken/turn differences (baseline minus reduced):")
+    print("\nToken/turn differences (Free-form minus Reduced):")
     print(diff_df.to_markdown(index=False, floatfmt=".2f"))
 
 if not call_summary.empty:
     print("\nPer-call token diagnostics:")
     print(call_summary.to_markdown(index=False, floatfmt=".2f"))
 
-print("\nWrote results_summary.csv, results_tokens_bar.png, results_turns_bar.png")
-print("Additional plots saved: tradeoff_tokens_success.png, tradeoff_tokens_timesteps.png, call_tokens_boxplot.png")
+print(
+    "\nWrote results_summary.csv, results_tokens_bar.png, results_turns_bar.png "
+    f"to {OUTPUT_DIR.as_posix()}"
+)
+print(
+    "Additional plots saved: tradeoff_tokens_success.png, tradeoff_tokens_timesteps.png, "
+    "call_tokens_boxplot.png"
+)

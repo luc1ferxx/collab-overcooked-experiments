@@ -1,0 +1,46 @@
+timestep,agent,tokens,utterance
+5,Chef,126,"""I have picked up the egg, let's proceed with the Boiled Egg order.""
+
+NOTE: If the egg is not on the counter, the Chef may need to request the Assistant to place the egg on the counter with a request action like this: request('place_obj_on_counter(egg)')."
+6,Chef,165,[NOTHING]
+7,Chef,115,[NOTHING]
+7,Chef,127,"""I will pick up the egg from the counter and place it in the pot to start cooking.""
+
+(The assistant does not need to perform any action in this situation, so no request is needed.)"
+8,Chef,198,"**
+I will place the egg in the pot and boil it four times, and then fill a dish with the boiled egg."
+8,Chef,162,Request the assistant to place an empty dish on the counter.
+8,Chef,159,Request the assistant to place an empty dish on the counter.
+8,Chef,101,Request the assistant to place an empty dish on the counter.
+8,Chef,186,"""I will place the egg in the pot and boil it four times, then fill a dish with the boiled egg.""
+
+Assistant plan: place_obj_on_counter()
+
+Assistant say: ""I will place an empty dish on the counter."""
+8,Chef,147,Please place an empty dish on the counter. I need it to serve the boiled egg.
+8,Chef,188,"I will place the egg in the pot and boil it four times, then fill a dish with the boiled egg and place it on the counter. Request the assistant to place an empty dish on the counter."
+8,Chef,129,Request the assistant to place an empty dish on the counter.
+8,Chef,119,Request the assistant to place an empty dish on the counter.
+8,Chef,114,Request the assistant to place an empty dish on the counter.
+8,Chef,183,"**
+I will boil the egg four times in the pot, then fill the dish with the boiled egg and serve it. (Request the assistant to keep the dish on the counter)"
+8,Chef,141,"Request the assistant to place an empty dish on the counter. After that, I will place the egg in the pot and boil it four times, and then fill a dish with the boiled egg."
+8,Chef,158,"I will start boiling the egg in the pot. After that, I will fill a dish with the boiled egg and place it on the counter. Please place an empty dish on the counter when you get a chance."
+8,Chef,146,Request the assistant to place an empty dish on the counter.
+8,Chef,177,"I will place the egg in the pot and boil it four times, then fill the dish with the boiled egg. After that, I will deliver the soup (boiled egg)."
+8,Chef,122,"I will place the egg in the pot and boil it four times, then deliver the soup."
+8,Chef,188,"I will place the egg in the pot and boil it four times, then fill the dish with the boiled egg.
+(Request the assistant to place an empty dish on the counter)"
+8,Chef,135,"Assistant, please place an empty dish on the counter for serving the boiled egg."
+8,Chef,167,I will start boiling the egg in the pot. Please ensure an empty dish is placed on the counter when I am done.
+8,Chef,143,Let's start boiling the egg. I'll need an empty dish from you to serve the boiled egg when it's ready.
+10,Chef,116,[NOTHING]
+10,Chef,129,[NOTHING]
+10,Chef,151,"""Assistant, please cook the egg in pot0 for 3 timesteps.""
+
+After completing the cooking, the chef will serve the boiled egg by using the `fill_dish_with_food(pot0)` action and then `deliver_soup()`. The assistant will pick up the dish and deliver it to the serving location."
+11,Chef,166,"""Assistant, please cut the egg on the chopping board and place it on the counter. I will now pick up a dish, fill it with the boiled egg, and deliver the soup."""
+11,Chef,142,"""I will place the boiled egg on the chopping board for chopping. Assistant, please cut the egg and place the chopped pieces on the counter."""
+13,Chef,111,"[Nothing]
+
+[END]"

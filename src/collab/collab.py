@@ -95,6 +95,9 @@ class LLMAgents(LLMPair):
         agent_index=None,
         outdir=None,
         use_discrete_comm=True,
+        comm_baseline: str = "triggered",
+        deterministic_max_tokens: int = 32,
+        pruning_similarity: float = 0.8,
     ):
         super().__init__(
             model=model, model_dirname=model_dirname, local_server_api=local_server_api
@@ -139,6 +142,9 @@ class LLMAgents(LLMPair):
         self.failed_history = []
         self.state = None
         self.use_discrete_comm = use_discrete_comm
+        self.comm_baseline = (comm_baseline or "triggered").lower()
+        self.deterministic_max_tokens = deterministic_max_tokens
+        self.pruning_similarity = pruning_similarity
         # dict to record if the error in T timestamp  was corrected, or just 'wait(1)'
         self.error_correct = {}
         turn_statistics_dict_cp = copy.deepcopy(turn_statistics_dict)
@@ -150,8 +156,26 @@ class LLMAgents(LLMPair):
         # optional per-turn log: (timestep, tokens, who, utterance)
         self.comm_token_log = []   # list[dict]
         # === END TOKEN-METER ===
-        self.comm_manager = DiscreteCommManager(self)
+        if self.comm_baseline in ("deterministic", "pruning_only") and not self.use_discrete_comm:
+            warnings.warn(
+                f"comm_baseline='{self.comm_baseline}' without discrete communication may reduce gating effectiveness."
+            )
+
+        self.plan_clip_limit = 1 if self.comm_baseline == "deterministic" else 2
+
+        force_always = self.comm_baseline == "always"
+        enable_trigger = self.comm_baseline not in ("always", "pruning_only")
+
+        self.comm_manager = DiscreteCommManager(
+            self,
+            enable_trigger=enable_trigger,
+            force_always_llm=force_always,
+        )
         self.discrete_comm_trace: List[dict] = []
+
+        # cache for semantic pruning variants
+        self.semantic_prompt_history: List[str] = []
+        self.enable_semantic_pruning = self.comm_baseline == "pruning_only"
         
         
     def get_comm_token_usage(self):
@@ -199,6 +223,14 @@ class LLMAgents(LLMPair):
         self.prompt_root = "/".join(self.prompt_file.split("/")[:-1])
         messages = [{"role": "system", "content": ""}]
 
+        decode_config = None
+        if self.comm_baseline == "deterministic":
+            decode_config = {
+                "temperature": 0.0,
+                "top_p": 1.0,
+                "max_tokens": int(self.deterministic_max_tokens or 32),
+            }
+
         return Module(
             messages,
             self.model,
@@ -206,6 +238,7 @@ class LLMAgents(LLMPair):
             self.local_server_api,
             retrival_method,
             K,
+            decode_config=decode_config,
         )
 
     # 	return messages
@@ -307,6 +340,7 @@ class LLMAgents(LLMPair):
         if hasattr(self.teammate, "comm_manager"):
             self.comm_manager.set_teammate(self.teammate.name)
         self.discrete_comm_trace.clear()
+        self.semantic_prompt_history.clear()
         try:
             self.turn_statistics_dict["statistical_data"]["communication"][
                 self.agent_index
@@ -1369,16 +1403,32 @@ class LLMAgents(LLMPair):
                 )
             else:
                 prepared_prompt = self.state_prompt + base_prompt
-            self.planner.current_user_message = {
-                "role": "user",
-                "content": prepared_prompt,
-            }
-            self.planner.base_user_prompt = prepared_prompt
-            response, tokens_num = self.planner.query(
-                key=self.openai_api_key(), proxy=self.proxy, stop="Scene", trace=True
-            )
-            if self.use_discrete_comm and decision:
-                self.comm_manager.record_response(state, response)
+            skip_query = False
+            if self.comm_baseline == "pruning_only":
+                if self._should_prune_prompt(prepared_prompt):
+                    response = self.comm_manager.build_silent_response()
+                    tokens_num = 0
+                    if self.use_discrete_comm and decision:
+                        self.comm_manager.record_response(state, response)
+                    skip_query = True
+            if not skip_query:
+                self.planner.current_user_message = {
+                    "role": "user",
+                    "content": prepared_prompt,
+                }
+                self.planner.base_user_prompt = prepared_prompt
+                response, tokens_num = self.planner.query(
+                    key=self.openai_api_key(),
+                    proxy=self.proxy,
+                    stop="Scene",
+                    trace=True,
+                )
+                if self.comm_baseline == "pruning_only":
+                    self._remember_semantic_prompt(prepared_prompt)
+                if self.use_discrete_comm and decision:
+                    self.comm_manager.record_response(state, response)
+            else:
+                response = ""
         if self.use_discrete_comm and decision and decision.tokens:
             token_str = " ".join(decision.tokens)
             response_lines = response.splitlines()
@@ -1388,9 +1438,12 @@ class LLMAgents(LLMPair):
             response = "\n".join(response_lines)
         parse_analysis = self.parse_response(response, "analysis")
         parse_plan = self.parse_response(response, "plan")
-        if self.use_discrete_comm:
+        if self.use_discrete_comm or self.comm_baseline == "deterministic":
             parse_analysis = self._clip_sentence(parse_analysis)
-            parse_plan = self._clip_plan(parse_plan)
+        if self.use_discrete_comm or self.comm_baseline == "deterministic":
+            parse_plan = self._clip_plan(
+                parse_plan, max_actions=self.plan_clip_limit
+            )
         # Analsysis did not generate error handling:
         if parse_analysis == "":
             print("Do not create analysis", response)
@@ -2751,3 +2804,27 @@ class LLMAgents(LLMPair):
             return plan_text
         actions = actions[:max_actions]
         return ";".join(actions)
+
+    def _should_prune_prompt(self, prompt: str) -> bool:
+        if self.pruning_similarity <= 0:
+            return False
+        candidate = (prompt or "").strip()
+        if not candidate:
+            return False
+        for previous in self.semantic_prompt_history:
+            try:
+                if if_two_sentence_similar_meaning(
+                    candidate, previous, threshold=self.pruning_similarity
+                ):
+                    return True
+            except Exception:
+                continue
+        return False
+
+    def _remember_semantic_prompt(self, prompt: str, max_history: int = 32) -> None:
+        candidate = (prompt or "").strip()
+        if not candidate:
+            return
+        self.semantic_prompt_history.append(candidate)
+        if len(self.semantic_prompt_history) > max_history:
+            self.semantic_prompt_history.pop(0)

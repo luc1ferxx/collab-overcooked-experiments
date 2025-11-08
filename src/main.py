@@ -123,7 +123,19 @@ def main(variant):
         agents_list = []
 
         current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        save_dir = f"{args.statistics_save_dir}/{args.gpt_model}/{args.order}"
+        comm_mode = variant.get('comm_baseline', 'triggered')
+        if comm_mode == 'triggered':
+            env_flag = os.environ.get("COLLAB_USE_DISCRETE_COMM")
+            use_discrete_flag = True if env_flag is None else env_flag.lower() not in ("0", "false", "no")
+            mode_folder = "reduced" if use_discrete_flag else "baseline"
+        else:
+            mode_folder = comm_mode
+        save_dir = os.path.join(
+            args.statistics_save_dir,
+            args.gpt_model,
+            args.order,
+            mode_folder,
+        )
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         filename = f"{save_dir}/experiment_{current_time}_{args.order}.json"
@@ -174,8 +186,20 @@ def main(variant):
                 local_server_api = variant['local_server_api']
                 retrival_method = variant['retrival_method']
                 K = variant['K']
-                agent = make_agent(alg, mdp, layout, model=gpt_model, model_dirname=model_dirname,local_server_api=local_server_api,
-                                   retrival_method=retrival_method, K=K,actor=actor_list[actor_num])
+                agent = make_agent(
+                    alg,
+                    mdp,
+                    layout,
+                    model=gpt_model,
+                    model_dirname=model_dirname,
+                    local_server_api=local_server_api,
+                    retrival_method=retrival_method,
+                    K=K,
+                    actor=actor_list[actor_num],
+                    comm_baseline=variant.get('comm_baseline', 'triggered'),
+                    deterministic_max_tokens=variant.get('deterministic_max_tokens', 32),
+                    pruning_similarity=variant.get('pruning_similarity', 0.8),
+                )
             else:
                 agent = make_agent(alg, mdp, layout)
             agents_list.append(agent)
@@ -307,6 +331,28 @@ if __name__ == '__main__':
     parser.add_argument('--log_dir', type=str, default=None, help='dir to save result')
     parser.add_argument('--debug', type=boolean_argument, default=True, help='debug mode')
     parser.add_argument('--order', type=str, default="", help='1 task order name')
+
+    # communication baseline controls
+    parser.add_argument(
+        '--comm_baseline',
+        type=str,
+        default='triggered',
+        choices=['triggered', 'always', 'deterministic', 'pruning_only'],
+        help='Communication baseline variant to run (triggered = current controller).'
+    )
+    parser.add_argument(
+        '--deterministic_max_tokens',
+        type=int,
+        default=32,
+        choices=[16, 32],
+        help='Max completion tokens when using comm_baseline=deterministic.'
+    )
+    parser.add_argument(
+        '--pruning_similarity',
+        type=float,
+        default=0.8,
+        help='Cosine similarity threshold for pruning-only semantic dedup.'
+    )
 
     #
     parser.add_argument('--statistics_save_dir', type=str, default='data', help='save directory of LLM statistics')

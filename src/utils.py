@@ -48,8 +48,17 @@ def make_agent(alg: str, mdp, layout, **gptargs):
                     use_discrete_comm = True
                 else:
                     use_discrete_comm = flag.lower() not in ("0", "false", "no")
+            comm_baseline = gptargs.pop("comm_baseline", "triggered")
+            deterministic_max_tokens = gptargs.pop("deterministic_max_tokens", 32)
+            pruning_similarity = gptargs.pop("pruning_similarity", 0.8)
             agent = LLMAgents(
-                mlam, layout, use_discrete_comm=use_discrete_comm, **gptargs
+                mlam,
+                layout,
+                use_discrete_comm=use_discrete_comm,
+                comm_baseline=comm_baseline,
+                deterministic_max_tokens=deterministic_max_tokens,
+                pruning_similarity=pruning_similarity,
+                **gptargs,
             )
 
         elif alg == "Greedy":

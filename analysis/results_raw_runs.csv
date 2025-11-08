@@ -1,19 +1,19 @@
 order,mode_key,mode,file,tokens,turns,success,timesteps,nonzero_calls,zero_token_calls,avg_tokens_per_call,median_tokens_per_call,max_tokens_per_call
-boiled_egg,baseline,Baseline,experiment_2025-11-06_03-50-32_boiled_egg.json,13612,93,1,14,93,0,146.36559139784947,136.0,655.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_03-57-03_boiled_egg.json,51528,347,1,28,345,2,149.35652173913044,148.0,269.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_04-18-30_boiled_egg.json,60780,409,1,43,409,0,148.60635696821515,139.0,1047.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_05-46-09_boiled_egg.json,27098,170,1,14,170,0,159.4,159.0,344.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_06-10-47_boiled_egg.json,30186,195,1,14,194,1,155.5979381443299,152.0,271.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_06-25-00_boiled_egg.json,22816,146,1,14,146,0,156.27397260273972,155.0,288.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_06-34-48_boiled_egg.json,22544,142,1,14,141,1,159.88652482269504,159.0,294.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_06-44-44_boiled_egg.json,24019,177,1,14,177,0,135.70056497175142,131.0,249.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_06-55-17_boiled_egg.json,26473,159,1,14,156,3,169.69871794871796,140.5,3479.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_07-06-18_boiled_egg.json,23931,170,1,14,168,2,142.44642857142858,135.0,267.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_22-11-18_boiled_egg.json,26966,168,1,14,165,3,163.43030303030304,161.0,308.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_22-24-08_boiled_egg.json,21522,141,1,14,141,0,152.63829787234042,153.0,288.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_22-34-27_boiled_egg.json,57358,341,1,14,340,1,168.7,162.0,2105.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_23-00-48_boiled_egg.json,22863,150,1,14,150,0,152.42,148.0,264.0
-boiled_egg,baseline,Baseline,experiment_2025-11-06_23-11-49_boiled_egg.json,30304,207,1,15,206,1,147.10679611650485,143.0,308.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_03-50-32_boiled_egg.json,13612,93,1,14,93,0,146.36559139784947,136.0,655.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_03-57-03_boiled_egg.json,51528,347,1,28,345,2,149.35652173913044,148.0,269.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_04-18-30_boiled_egg.json,60780,409,1,43,409,0,148.60635696821515,139.0,1047.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_05-46-09_boiled_egg.json,27098,170,1,14,170,0,159.4,159.0,344.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_06-10-47_boiled_egg.json,30186,195,1,14,194,1,155.5979381443299,152.0,271.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_06-25-00_boiled_egg.json,22816,146,1,14,146,0,156.27397260273972,155.0,288.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_06-34-48_boiled_egg.json,22544,142,1,14,141,1,159.88652482269504,159.0,294.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_06-44-44_boiled_egg.json,24019,177,1,14,177,0,135.70056497175142,131.0,249.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_06-55-17_boiled_egg.json,26473,159,1,14,156,3,169.69871794871796,140.5,3479.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_07-06-18_boiled_egg.json,23931,170,1,14,168,2,142.44642857142858,135.0,267.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_22-11-18_boiled_egg.json,26966,168,1,14,165,3,163.43030303030304,161.0,308.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_22-24-08_boiled_egg.json,21522,141,1,14,141,0,152.63829787234042,153.0,288.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_22-34-27_boiled_egg.json,57358,341,1,14,340,1,168.7,162.0,2105.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_23-00-48_boiled_egg.json,22863,150,1,14,150,0,152.42,148.0,264.0
+boiled_egg,baseline,Free-form,experiment_2025-11-06_23-11-49_boiled_egg.json,30304,207,1,15,206,1,147.10679611650485,143.0,308.0
 boiled_egg,reduced,Reduced,experiment_2025-11-06_07-19-02_boiled_egg.json,1399,7,1,14,7,0,199.85714285714286,156.0,471.0
 boiled_egg,reduced,Reduced,experiment_2025-11-06_07-20-16_boiled_egg.json,1196,8,1,14,8,0,149.5,138.5,205.0
 boiled_egg,reduced,Reduced,experiment_2025-11-06_07-23-03_boiled_egg.json,1680,13,1,15,9,4,186.66666666666666,197.0,253.0
@@ -29,21 +29,51 @@ boiled_egg,reduced,Reduced,experiment_2025-11-06_23-30-54_boiled_egg.json,1050,8
 boiled_egg,reduced,Reduced,experiment_2025-11-06_23-33-28_boiled_egg.json,1309,12,1,15,8,4,163.625,151.5,304.0
 boiled_egg,reduced,Reduced,experiment_2025-11-06_23-34-33_boiled_egg.json,1308,8,1,14,8,0,163.5,164.0,241.0
 boiled_egg,reduced,Reduced,experiment_2025-11-06_23-35-18_boiled_egg.json,1262,9,1,14,9,0,140.22222222222223,134.0,171.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_07-55-11_boiled_mushroom.json,18818,136,1,15,135,1,139.3925925925926,133.0,298.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_08-05-15_boiled_mushroom.json,26217,177,1,15,176,1,148.96022727272728,140.0,358.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_08-18-37_boiled_mushroom.json,50690,329,1,14,327,2,155.01529051987768,151.0,300.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_16-58-25_boiled_mushroom.json,25955,178,1,14,178,0,145.81460674157304,142.0,636.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_17-09-57_boiled_mushroom.json,48822,362,1,14,359,3,135.99442896935932,129.0,375.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_17-33-42_boiled_mushroom.json,34194,221,1,14,221,0,154.7239819004525,151.0,336.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_17-49-33_boiled_mushroom.json,28603,186,1,14,186,0,153.77956989247312,146.5,327.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_18-03-21_boiled_mushroom.json,25773,184,1,14,184,0,140.07065217391303,132.5,284.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_18-18-17_boiled_mushroom.json,23703,164,1,14,163,1,145.41717791411043,145.0,235.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_19-46-54_boiled_mushroom.json,41693,295,1,14,294,1,141.81292517006804,140.0,292.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_20-38-01_boiled_mushroom.json,31250,211,1,15,208,3,150.2403846153846,146.5,327.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_20-57-29_boiled_mushroom.json,15758,104,1,14,104,0,151.51923076923077,150.0,334.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_21-05-49_boiled_mushroom.json,46036,317,1,14,316,1,145.68354430379748,142.0,420.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_21-38-44_boiled_mushroom.json,39730,251,1,14,251,0,158.28685258964143,157.0,560.0
-boiled_mushroom,baseline,Baseline,experiment_2025-11-06_21-57-13_boiled_mushroom.json,27926,178,1,14,178,0,156.8876404494382,147.0,331.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_08-00-51_boiled_egg.json,30506,199,1,15,199,0,153.2964824120603,150.0,322.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_08-14-21_boiled_egg.json,24433,162,1,15,161,1,151.75776397515529,144.0,1129.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_08-29-41_boiled_egg.json,40746,254,1,14,254,0,160.41732283464566,156.5,344.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_08-46-57_boiled_egg.json,51493,345,1,14,344,1,149.6889534883721,146.0,301.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_09-08-09_boiled_egg.json,42350,279,1,15,278,1,152.33812949640287,146.0,289.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_09-24-46_boiled_egg.json,39019,259,1,14,259,0,150.65250965250965,147.0,265.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_09-41-04_boiled_egg.json,27074,196,1,14,196,0,138.1326530612245,132.5,316.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_09-51-56_boiled_egg.json,24193,168,1,14,168,0,144.00595238095238,137.0,345.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_10-06-35_boiled_egg.json,34398,222,1,14,222,0,154.94594594594594,149.5,688.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_17-03-51_boiled_egg.json,48834,319,1,14,319,0,153.0846394984326,148.0,439.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_17-27-57_boiled_egg.json,21597,136,1,14,136,0,158.8014705882353,140.0,978.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_17-39-06_boiled_egg.json,24319,144,1,15,144,0,168.88194444444446,143.0,2134.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_17-51-05_boiled_egg.json,30295,203,1,14,201,2,150.72139303482587,150.0,282.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_18-27-02_boiled_egg.json,33253,226,1,15,225,1,147.79111111111112,141.0,332.0
+boiled_egg,always,Always Talk,experiment_2025-11-07_19-02-16_boiled_egg.json,23726,149,1,14,149,0,159.23489932885906,157.0,318.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_21-15-05_boiled_egg.json,14157,102,1,15,102,0,138.7941176470588,135.0,268.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_21-22-27_boiled_egg.json,31938,216,1,14,214,2,149.2429906542056,144.0,303.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_21-38-12_boiled_egg.json,39845,306,1,15,306,0,130.21241830065358,124.0,363.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_21-57-21_boiled_egg.json,20695,128,1,14,128,0,161.6796875,154.5,827.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_22-06-55_boiled_egg.json,41442,277,1,15,276,1,150.15217391304347,149.5,328.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_22-26-13_boiled_egg.json,25101,176,1,14,176,0,142.6193181818182,138.0,451.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_22-53-00_boiled_egg.json,14606,97,1,15,97,0,150.57731958762886,148.0,279.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_22-59-38_boiled_egg.json,18617,131,1,15,131,0,142.1145038167939,130.0,373.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_23-08-30_boiled_egg.json,4470,27,1,14,27,0,165.55555555555554,164.0,252.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_23-26-25_boiled_egg.json,24304,172,1,14,170,2,142.96470588235294,136.0,291.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_23-37-53_boiled_egg.json,59637,400,1,14,400,0,149.0925,143.0,323.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-08_00-19-48_boiled_egg.json,21358,123,1,14,123,0,173.64227642276424,162.0,308.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-08_00-29-48_boiled_egg.json,13356,88,1,14,88,0,151.77272727272728,137.5,727.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-08_00-35-51_boiled_egg.json,14813,90,1,14,89,1,166.43820224719101,167.0,302.0
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-08_00-53-36_boiled_egg.json,10149,67,1,14,67,0,151.47761194029852,146.0,272.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_07-55-11_boiled_mushroom.json,18818,136,1,15,135,1,139.3925925925926,133.0,298.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_08-05-15_boiled_mushroom.json,26217,177,1,15,176,1,148.96022727272728,140.0,358.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_08-18-37_boiled_mushroom.json,50690,329,1,14,327,2,155.01529051987768,151.0,300.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_16-58-25_boiled_mushroom.json,25955,178,1,14,178,0,145.81460674157304,142.0,636.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_17-09-57_boiled_mushroom.json,48822,362,1,14,359,3,135.99442896935932,129.0,375.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_17-33-42_boiled_mushroom.json,34194,221,1,14,221,0,154.7239819004525,151.0,336.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_17-49-33_boiled_mushroom.json,28603,186,1,14,186,0,153.77956989247312,146.5,327.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_18-03-21_boiled_mushroom.json,25773,184,1,14,184,0,140.07065217391303,132.5,284.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_18-18-17_boiled_mushroom.json,23703,164,1,14,163,1,145.41717791411043,145.0,235.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_19-46-54_boiled_mushroom.json,41693,295,1,14,294,1,141.81292517006804,140.0,292.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_20-38-01_boiled_mushroom.json,31250,211,1,15,208,3,150.2403846153846,146.5,327.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_20-57-29_boiled_mushroom.json,15758,104,1,14,104,0,151.51923076923077,150.0,334.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_21-05-49_boiled_mushroom.json,46036,317,1,14,316,1,145.68354430379748,142.0,420.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_21-38-44_boiled_mushroom.json,39730,251,1,14,251,0,158.28685258964143,157.0,560.0
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_21-57-13_boiled_mushroom.json,27926,178,1,14,178,0,156.8876404494382,147.0,331.0
 boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-36-05_boiled_mushroom.json,1258,13,1,15,9,4,139.77777777777777,142.0,177.0
 boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-38-16_boiled_mushroom.json,1271,13,1,15,9,4,141.22222222222223,136.0,197.0
 boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-39-40_boiled_mushroom.json,1211,8,1,14,8,0,151.375,153.0,190.0

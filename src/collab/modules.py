@@ -113,6 +113,7 @@ class Module(object):
         local_server_api="http://localhost:8000/v1",
         retrival_method="recent_k",
         K=3,
+        decode_config=None,
     ):
 
         self.model = model
@@ -133,6 +134,7 @@ class Module(object):
         self.experience = []
         self.embedding = None
         self.current_timestep = None
+        self.decode_config = decode_config or {}
 
     def load_embedding(self):
         df = pd.read_csv(os.getcwd() + "/data/embedding_" + self.name.lower() + ".csv")
@@ -180,7 +182,9 @@ class Module(object):
         key,
         proxy,
         stop=None,
-        temperature=0.7,
+        temperature=None,
+        top_p=None,
+        max_tokens=None,
         debug_mode="Y",
         trace=True,
         rethink=False,
@@ -195,6 +199,14 @@ class Module(object):
         else:
             openai.api_base = self.local_server_api
             openai.api_key = "token-abc123"
+
+        cfg = self.decode_config or {}
+        if temperature is None:
+            temperature = cfg.get("temperature", 0.7)
+        if top_p is None:
+            top_p = cfg.get("top_p")
+        if max_tokens is None:
+            max_tokens = cfg.get("max_tokens")
 
         rec = self.K
         messages = self.query_messages(rethink)
@@ -264,31 +276,46 @@ class Module(object):
 
                 elif "gpt-3.5-turbo-0125" in self.model:
                     client = OpenAI(api_key=openai.api_key)
-                    response = client.chat.completions.create(
-                        model=self.model, messages=messages, temperature=temperature
-                    )
+                    chat_kwargs = {"model": self.model, "messages": messages}
+                    if temperature is not None:
+                        chat_kwargs["temperature"] = temperature
+                    if top_p is not None:
+                        chat_kwargs["top_p"] = top_p
+                    if max_tokens is not None:
+                        chat_kwargs["max_tokens"] = max_tokens
+                    response = client.chat.completions.create(**chat_kwargs)
                     time.sleep(1)
                     encoder_name = "gpt-3.5-turbo"
 
                 elif self.model in ["text-davinci-003"]:
                     prompt = convert_messages_to_prompt(messages)
-                    response = openai.Completion.create(
-                        model=self.model,
-                        prompt=prompt,
-                        stop=stop,
-                        temperature=temperature,
-                        max_tokens=256,
-                    )
+                    completion_kwargs = {
+                        "model": self.model,
+                        "prompt": prompt,
+                        "stop": stop,
+                    }
+                    if temperature is not None:
+                        completion_kwargs["temperature"] = temperature
+                    if max_tokens is not None:
+                        completion_kwargs["max_tokens"] = max_tokens
+                    else:
+                        completion_kwargs["max_tokens"] = 256
+                    if top_p is not None:
+                        completion_kwargs["top_p"] = top_p
+                    response = openai.Completion.create(**completion_kwargs)
                     time.sleep(1)
                     encoder_name = "p50k_base"
 
                 elif "gpt-4o" == self.model:
                     client = OpenAI(api_key=openai.api_key)
-                    response = client.chat.completions.create(
-                        model=self.model,  # home_path+"/models/"+self.model,
-                        messages=messages,
-                        temperature=temperature,
-                    )
+                    chat_kwargs = {"model": self.model, "messages": messages}
+                    if temperature is not None:
+                        chat_kwargs["temperature"] = temperature
+                    if top_p is not None:
+                        chat_kwargs["top_p"] = top_p
+                    if max_tokens is not None:
+                        chat_kwargs["max_tokens"] = max_tokens
+                    response = client.chat.completions.create(**chat_kwargs)
                     response = response.to_dict()
                     time.sleep(1)
                     encoder_name = "gpt-4"
@@ -297,21 +324,31 @@ class Module(object):
 
                 elif "deepseek" in self.model.lower():
                     client = OpenAI(api_key=openai.api_key, base_url=openai.api_base)
-                    response = client.chat.completions.create(
-                        model=self.model, messages=messages, temperature=temperature
-                    )
+                    chat_kwargs = {"model": self.model, "messages": messages}
+                    if temperature is not None:
+                        chat_kwargs["temperature"] = temperature
+                    if top_p is not None:
+                        chat_kwargs["top_p"] = top_p
+                    if max_tokens is not None:
+                        chat_kwargs["max_tokens"] = max_tokens
+                    response = client.chat.completions.create(**chat_kwargs)
                     time.sleep(1)
                     encoder_name = "gpt-4"
 
                 # Open source model, use vLLM
                 else:
                     client = OpenAI(api_key=openai.api_key, base_url=openai.api_base)
-                    response = client.chat.completions.create(
-                        model=self.model_dirname
-                        + self.model,  # home_path+"/models/"+self.model,
-                        messages=messages,
-                        temperature=temperature,
-                    )
+                    chat_kwargs = {
+                        "model": self.model_dirname + self.model,
+                        "messages": messages,
+                    }
+                    if temperature is not None:
+                        chat_kwargs["temperature"] = temperature
+                    if top_p is not None:
+                        chat_kwargs["top_p"] = top_p
+                    if max_tokens is not None:
+                        chat_kwargs["max_tokens"] = max_tokens
+                    response = client.chat.completions.create(**chat_kwargs)
                     encoder_name = "llama3"
 
                 get_response = True

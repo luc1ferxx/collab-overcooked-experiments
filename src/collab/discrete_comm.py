@@ -189,7 +189,7 @@ class NoProgressWatchdog:
 class DiscreteCommManager:
     """Implements event-triggered discrete communication pipeline."""
 
-    def __init__(self, agent):
+    def __init__(self, agent, enable_trigger: bool = True, force_always_llm: bool = False):
         self.agent = agent
         self.teammate_name: Optional[str] = None
         self.detector = TriggerDetector(agent)
@@ -197,6 +197,8 @@ class DiscreteCommManager:
         self.watchdog = NoProgressWatchdog()
         self.current_decision: Optional[TriggerDecision] = None
         self.metrics: Dict[str, int] = {"silent_turns": 0, "fallback_count": 0}
+        self.enable_trigger = enable_trigger
+        self.force_always_llm = force_always_llm
 
     def set_teammate(self, name: str):
         self.teammate_name = name
@@ -209,6 +211,18 @@ class DiscreteCommManager:
     # -- Turn lifecycle -------------------------------------------------
 
     def begin_turn(self, state) -> TriggerDecision:
+        if self.force_always_llm:
+            decision = TriggerDecision(mode="llm", tokens=[], reason="always_force")
+            self.current_decision = decision
+            self._log_decision(decision, {"force": True})
+            return decision
+
+        if not self.enable_trigger:
+            decision = TriggerDecision(mode="llm", tokens=[], reason="trigger_disabled")
+            self.current_decision = decision
+            self._log_decision(decision, {"trigger": False})
+            return decision
+
         tokens, flags = self.detector.detect(state)
         tokens = self.pruner.prune(tokens)
 

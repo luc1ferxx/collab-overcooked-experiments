@@ -1,0 +1,38 @@
+timestep,agent,tokens,utterance
+5,Assistant,272,"""I will chop the egg on the chopping board and ask you to fill a dish with it. Then, I will blend the chopped egg and ask you to fill another dish. After that, I will ask you to wait for 5 timesteps before serving the boiled egg."""
+5,Assistant,119,"""Please place the egg on the counter so I can prepare it on the chopping board."""
+6,Assistant,173,Please bring the egg from the counter to the blender. I'll blend it for the boiled egg order.
+6,Assistant,186,"""Could you please fill a dish and bring it over here? I'll need to crack and cook the egg in the blender."""
+7,Assistant,107,"""I have the egg ready for you, Chef. Could you please pick it up to boil it?"""
+7,Assistant,95,[NOTHING]
+7,Assistant,160,"Assistant says (turn 1): ""I will place the egg on the counter and pass it to the Chef."""
+8,Assistant,148,Request the Chef to fill a dish with the boiled egg.
+8,Assistant,145,Request the Chef to fill a dish with the boiled egg and then place it on the counter.
+8,Assistant,165,Request the Chef to fill a dish with the boiled egg and place it on the counter.
+8,Assistant,174,Request a pot from the Assistant.
+8,Assistant,138,Request an empty dish from the assistant.
+8,Assistant,211,"Request the Chef to cook the boiled egg four times and fill a dish with it, then place the dish on the counter."
+8,Assistant,121,Request an empty dish from the assistant.
+8,Assistant,148,"Request an empty dish from the Assistant and request the Chef to cook the boiled egg four times, fill the dish with it, and then place the dish on the counter."
+8,Assistant,186,"Request the Chef to continue boiling the egg four more times and then fill a dish with the boiled egg. After that, please place the dish on the counter."
+8,Assistant,137,Request an empty dish from the Assistant and place it on the counter.
+8,Assistant,136,Request the Chef to fill the dish with the boiled egg once it is ready.
+8,Assistant,94,Request an empty dish from the assistant.
+8,Assistant,245,"** request('pickup(dish, dish_dispenser)')"
+8,Assistant,141,Request the assistant to pick up an empty dish from the dish dispenser.
+8,Assistant,130,Request the Chef to fill the dish with the boiled egg and place it on the counter.
+8,Assistant,183,Request the Chef to place an empty dish on the counter.
+8,Assistant,117,Request the Chef to fill the dish with the boiled egg and place it on the counter.
+8,Assistant,135,Request a dish from the Assistant to place the boiled egg in.
+8,Assistant,99,Request a dish from the Assistant.
+8,Assistant,236,[NOTHING]
+8,Assistant,170,"Request the Chef to put the egg in a pot for boiling, then boil it four times. After that, fill a dish with the boiled egg."
+10,Assistant,193,"""Chef, please cook the egg in pot0."""
+10,Assistant,132,"""Assistant, please place the egg on the counter."""
+10,Assistant,116,[NOTHING]
+10,Assistant,134,"""Assistant, please pick up the boiled egg from the counter and put it in pot0."""
+11,Assistant,119,"""I will cut the egg on the chopping board and then place it on the counter."""
+11,Assistant,176,[NOTHING]
+11,Assistant,184,"** Assistant says: ""Cut the egg on the chopping board, then place it on the counter. Chef, please fill a dish with the chopped egg and deliver the boiled egg."""
+13,Assistant,154,"Please crack the egg on the chopping board and blend it. After blending, fill a dish with the mixture and place it on the counter."
+13,Assistant,159,"Please crack the egg on the chopping board and blend it. After blending, please fill a dish with the mixture and place it on the counter."
