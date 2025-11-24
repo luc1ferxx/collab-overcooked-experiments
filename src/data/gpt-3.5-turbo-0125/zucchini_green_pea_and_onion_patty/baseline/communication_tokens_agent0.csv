@@ -1,0 +1,36 @@
+timestep,agent,tokens,utterance
+50,Chef,147,[NOTHING]
+50,Chef,121,"""I will place the onion slices on the counter and fill a dish with the cooked onion slices from the oven0."""
+50,Chef,143,[NOTHING]
+50,Chef,129,"""Assistant, please pick up the zucchini from the ingredient dispenser and place it on the chopping board to chop it."""
+50,Chef,160,"I will place the onion slices on the counter.
+
+Assistant plan request: pickup(zucchini, ingredient_dispenser);cut(chopping_board0);place_obj_on_counter()
+
+Assistant say: Please pick up the zucchini from the ingredient dispenser and place it on the chopping board0 to chop it."
+55,Chef,94,[NOTHING]
+55,Chef,129,"""I will take the cooked patty from the oven and fill the dish with it, then serve the dish."""
+55,Chef,107,"** ""I will pick up the cooked zucchini patty from the oven and fill the dish with it, then serve the dish."""
+55,Chef,100,"""I will take the cooked patty from the oven and fill the dish with it, then serve the dish."""
+55,Chef,159,"I will take the cooked patty from the oven and fill the dish with it, then serve the dish. Request(Assistant, ""place_obj_on_counter(chopped_zucchini)"")"
+55,Chef,115,"""I will take the cooked patty from the oven and fill the dish with it, then serve the dish."""
+55,Chef,146,"I will take the cooked patty from the oven and fill the dish with it, then serve the dish."
+55,Chef,113,"I will retrieve the dish, fill it with the cooked patty from the oven, and serve it. [END]"
+55,Chef,194,Chef: Could you please chop the zucchini on the chopping board and then place it on the counter for me to cook the patty? I will then fill the dish with the cooked patty and serve it.
+55,Chef,133,"I will remove the cooked patty from the oven and fill the dish with it, then serve the dish. Please ensure the dish is ready when I need it.
+
+Response end condition: [END]"
+55,Chef,151,"""I will now fill the dish with the cooked patty and serve the dish."""
+55,Chef,153,"""Please chop the zucchini on the chopping board and place it on the counter so I can cook it in the oven and serve the dish."""
+55,Chef,270,"I will boil the zucchini slices in the pot for 3 timesteps, then mash them in the blender and cook for another 3 timesteps. After that, I will fill the dish with the mashed zucchini and serve the dish.
+
+Assistant, could you please boil the zucchini slices in the pot for 3 timesteps? Then, place the boiled zucchini slices in the blender and stir it for 3 timesteps. After that, I will cook the patty in the oven and you can fill the dish with the cooked patty and serve it."
+55,Chef,148,"""I will fill the dish with the cooked patty and serve it."""
+55,Chef,85,"I will cook the chopped zucchini in the oven, then fill the dish and serve the dish."
+55,Chef,153,"""Assistant, please place the chopped zucchini on the counter so that I can cook it in the oven and then fill the dish with the cooked zucchini."""
+56,Chef,96,"- Chef says: I have delivered the soup. Good job, Assistant. I will now wait for the next order."
+57,Chef,99,"""Please chop the remaining zucchini on the chopping board. I will deliver the soup."""
+57,Chef,100,[NOTHING]
+57,Chef,80,[NOTHING]
+57,Chef,78,[NOTHING]
+57,Chef,89,"- ""I will deliver the soup."""

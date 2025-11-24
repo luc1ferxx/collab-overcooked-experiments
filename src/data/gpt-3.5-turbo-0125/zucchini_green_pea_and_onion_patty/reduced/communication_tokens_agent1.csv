@@ -1,0 +1,6 @@
+timestep,agent,tokens,utterance
+50,Assistant,501,"[Assistant] Let's start by getting the zucchini, green peas, and onion_slices. I'll chop the onion_slices and mix them with the zucchini. Then I'll mix the green peas separately. After that, we'll combine the zucchini, onion, and green peas mixtures on the chopping board and place it on the counter. Lastly, you'll fill a dish with the zucchini green pea and onion patty and deliver it to the serving location."
+51,Assistant,146,I will mix the onion slices with the ingredients in the oven. Please pick up the dish from the dish dispenser and fill it with the mixture once I place it on the counter.
+54,Assistant,285,"Please chop the zucchini and the onion. Once chopped, place them in the blender and mix them well. I will then fill the dish with the cooked zucchini, green pea, and onion patty from the oven."
+55,Assistant,204,"Assistant says: Let's prepare the zucchini, peas, and onions, then blend the mixture. I'll start by chopping the vegetables. After that, I'll need you to blend the chopped ingredients. Once blended, fill the dish with the mixture from the blender."
+56,Assistant,148,"""Assistant needs a dish to hold the food. Could you please pick up a dish from the dish dispenser and fill it with the zucchini_green_pea_and_onion_patty in your hand?"""

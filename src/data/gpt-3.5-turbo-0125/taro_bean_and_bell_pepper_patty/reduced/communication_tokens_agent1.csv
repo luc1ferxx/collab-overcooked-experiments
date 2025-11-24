@@ -1,0 +1,10 @@
+timestep,agent,tokens,utterance
+51,Assistant,191,"Assistant says (turn 1): ""Please pick up the bell_pepper_slice and place it on the counter."""
+52,Assistant,131,"""Assistant says: Pick up bell pepper slices from the ingredient dispenser."""
+53,Assistant,165,Assistant says (turn 1): S1(Assistant) Pick up taro beans and bell pepper slices from the ingredient dispenser and start preparing the taro_bean_and_bell_pepper_patty.
+54,Assistant,149,"""I will pick up the dish from the counter and fill it with the chopped onions from the oven. Please wait for 2 timesteps."""
+55,Assistant,78,[NOTHING]
+55,Assistant,312,Assistant says (turn 1): Request dish from Chef.
+57,Assistant,132,"Chef, could you please provide the recipe for taro_bean_and_bell_pepper_patty? We need to ensure we are following the correct steps."
+58,Assistant,161,"Request taro_bean_and_bell_pepper_patty from the counter, please."
+59,Assistant,122,"Chef, please deliver the taro_bean_and_bell_pepper_patty dish to the counter. After delivering the dish, please let me know so I can cook it in the oven."

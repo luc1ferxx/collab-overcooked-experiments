@@ -1,0 +1,36 @@
+timestep,agent,tokens,utterance
+50,Chef,156,[NOTHING]
+51,Chef,214,"""Please cook the taro slices for a few timesteps, then chop them and blend them before stirring. Once done, place the blender on the counter for me to proceed."""
+52,Chef,168,"""I will pick up the dish from the counter and place it on the counter near you. After that, please put the dish into the oven0 utensil and let the oven finish cooking for 2 timesteps."""
+53,Chef,171,"""I will pick up a dish from the counter and fill it with the chopped taro and bell pepper prepared by the assistant.""
+
+In this plan, the chef is requesting the assistant to move the chopped taro and bell pepper from the chopping board to a dish. Once the assistant completes this action, the chef can fill the dish with the prepared ingredients and continue with the recipe."
+53,Chef,155,"""I will pick up the dish from the counter and fill it with the taro-bean mixture from the oven.""
+
+(NOTHING)"
+53,Chef,147,"Nothing. The assistant has already prepared the chopped taro bean and bell pepper, so no need to request anything at the moment. The oven is still processing the mixture, so the Chef will wait for it to finish."
+53,Chef,159,"""Please place the chopped taro and bell pepper on a dish and then bring the dish to me."""
+53,Chef,91,Please pick up a dish from the counter and fill it with the taro-bean mixture from the oven.
+53,Chef,121,"""I need a dish to mix the taro-bean mixture. Could you please bring a dish from the dish dispenser?"""
+53,Chef,173,"I need to pick up a dish from the counter first. Then I will fill it with the cooked taro, bean, and bell pepper from the oven. Please chop the taro bean and bell pepper slices and mix them on the counter when you have a dish ready."
+53,Chef,137,"""Please mix the chopped taro bean and bell pepper slices on the counter. Once mixed, I will fill the dish with the taro-bean mixture from the oven."""
+53,Chef,198,"I will wait for the taro slices to cook for 1 more timestep. After that, I will pick up the dish from the counter and fill it with the taro-bean mixture from the oven."
+53,Chef,150,I will pick up the dish from the counter and fill it with the taro-bean mixture from the oven.
+53,Chef,146,"""I will mix the chopped taro bean and bell pepper with the dish you have ready."""
+53,Chef,117,"**
+Request the assistant to bring a dish from the counter and mix it with the chopped taro bean and bell pepper slices on the counter. Then we can proceed with the recipe."
+53,Chef,100,Please pick up a dish from the counter. I will fill it with the cooked taro and bell pepper.
+53,Chef,124,I will bring the dish from the counter and fill it with the taro-bean mixture from the oven.
+53,Chef,142,I will pick up the dish from the counter and fill it with the taro-bean mixture from the oven.
+53,Chef,151,"I need to fill the dish with the baked taro, bean, and bell pepper mixture from the oven. Please bring the dish from the counter."
+53,Chef,119,I need to pick up the dish from the counter. Then I will fill it with the taro-bean mixture from the oven.
+53,Chef,165,"""Please bring the chopped taro bean and bell pepper slices to the oven. I will put them in the oven to bake."""
+53,Chef,140,"""Assistant, could you please bring a dish from the dish dispenser?"""
+53,Chef,168,I will pick up a dish from the counter and fill it with the cooked taro slices from the oven.
+53,Chef,121,"""I will pick up the dish from the counter and fill it with the taro-bean mixture from the oven."""
+53,Chef,125,I will pick up a dish from the counter and fill it with the mashed taro from the blender.
+55,Chef,155,"""Please pick up the cooked taro, beans, and bell pepper from the counter and fill the dish in the oven with them. Once filled, please deliver the soup."""
+55,Chef,160,"""Please cook the taro, bean, and bell pepper patty in the oven."""
+55,Chef,216,"""Please cook the taro, bean, and bell pepper patty in the oven if it is not already cooking."""
+55,Chef,129,"Please place the Taro, Bean, and Bell Pepper Patty on the counter. Once placed, I will fill the dish in the oven with the patty and then deliver the soup."
+55,Chef,153,[NOTHING]
