@@ -9,6 +9,7 @@ from rich import print as rprint
 
 from eval_utils import Evaluation, ExpLog
 from distutils.util import strtobool
+from utils import get_model_folder_name
 
 models = ["gpt-4o"]
 
@@ -23,15 +24,17 @@ def main(variant):
 
     if variant['mode'] == 'exp':
 
+        model_folder = get_model_folder_name(variant['gpt_model'])
+
         if variant['test_mode'] == 'fix_task':
             auto_order_list = []
             if variant['order'] == 'AUTO':
-                exp_log = ExpLog(variant['log_dir'] + '/' + variant['model'])
+                exp_log = ExpLog(os.path.join(variant['log_dir'], model_folder))
                 for idx in range(exp_log.__len__()):
                     auto_order_list.append(exp_log.get_secondary_order_list(idx, 0)[0])
                 eval = Evaluation(order_name_list=auto_order_list,exp_log=exp_log)
             else:
-                exp_log = ExpLog(variant['log_dir']+ '/' + variant['model'] + '/' + variant['order'])
+                exp_log = ExpLog(os.path.join(variant['log_dir'], model_folder, variant['order']))
                 for idx in range(exp_log.__len__()):
                     auto_order_list.append(variant['order'])
                 eval = Evaluation(order_name_list=auto_order_list,exp_log=exp_log)
@@ -40,15 +43,16 @@ def main(variant):
             for model in models:
                 for order in orders:
                     auto_order_list = []
-                    variant['model'] = model
+                    variant['gpt_model'] = model
                     variant['order'] = order
-                    exp_log = ExpLog(variant['log_dir']+ '/' + variant['model'] + '/' + variant['order'])
+                    model_folder = get_model_folder_name(model)
+                    exp_log = ExpLog(os.path.join(variant['log_dir'], model_folder, variant['order']))
                     for idx in range(exp_log.__len__()):
                         auto_order_list.append(variant['order'])
                     eval = Evaluation(order_name_list=auto_order_list,exp_log=exp_log)
 
                     #print(eval.evaluate(variant['save_dir']))
-                    eval.evaluate(variant['log_dir']+ '/' + variant['model'] + '/' + variant['order'])
+                    eval.evaluate(os.path.join(variant['log_dir'], model_folder, variant['order']))
 
 
 
@@ -57,7 +61,7 @@ if __name__ == '__main__':
     
     parser = ArgumentParser(description='OvercookedAI Experiment')
 
-    parser.add_argument('--model', type=str, default='gpt-3.5-turbo-0125', help='Number of episodes')
+    parser.add_argument('--gpt_model', '--model', dest='gpt_model', type=str, default='gpt-3.5-turbo-0125', help='Model to evaluate')
 
     parser.add_argument('--K', type=int, default=0, help="The number of dialogues you want to retrieve.")
     

@@ -50,7 +50,7 @@ from overcooked_ai_py.mdp.actions import Action
 from collab.modules import statistics_dict, tokenizer,model, turn_statistics_dict
 from collab.web_util import output_to_port, check_port_in_use, change_port
 import socket
-from utils import make_agent, get_example_embedding, combine_statistic_dict
+from utils import make_agent, get_example_embedding, combine_statistic_dict, get_model_folder_name
 
 
 def summarize_comm_tokens(team):
@@ -115,6 +115,8 @@ def main(variant):
 
     start_time = time.time()
     results = []
+    # allow overriding the output folder name independent of the actual model id
+    model_folder = get_model_folder_name(variant.get("output_model_tag") or args.gpt_model)
 
     actor_num = 0
     actor_list = ['chef','assistant']
@@ -132,7 +134,7 @@ def main(variant):
             mode_folder = comm_mode
         save_dir = os.path.join(
             args.statistics_save_dir,
-            args.gpt_model,
+            model_folder,
             args.order,
             mode_folder,
         )
@@ -318,6 +320,12 @@ if __name__ == '__main__':
 
     # model:'gpt-3.5-turbo-0125', 'gpt-3.5-turbo', 'gpt-4', 'gpt-4o','gpt-o1mini','gpt4-turbo','llama3-8B','Llama-3.1-8B-Instruct','Llama-3.1-70B-Instruct',"Yi-1.2-34B","yi-lightning","yi-large",'yi-medium',"Qwen2.5-7B-Instruct","Qwen2.5-72B-Instruct","Qwen2.5-14B-Instruct","Qwen2.5-32B-Instruct",'claude3_sonnet'
     parser.add_argument('--gpt_model', type=str, default='gpt-3.5-turbo-0125')
+    parser.add_argument(
+        '--output_model_tag',
+        type=str,
+        default=None,
+        help='Override the folder name under statistics_save_dir (sanitized).',
+    )
     
     parser.add_argument('--retrival_method', type=str, default="recent_k", choices=['recent_k', 'bert_topk'], help='Use similarity-based(BERT, CLIP) retrieval or retrieve recent K history in dialog.')
     parser.add_argument('--K', type=int, default=0, help="The number of dialogues you want to retrieve.")

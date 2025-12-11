@@ -1,0 +1,3 @@
+timestep,agent,tokens,utterance
+50,Chef,202,"bake(oven0); request('pickup(dish, dish_dispenser)'); request('fill_dish_with_food(dish)'); request('place_obj_on_counter()'); request('pick_up(dish)')"
+50,Chef,163,"bake(oven0); request('pickup(dish, dish_dispenser)'); request('fill_dish_with_food(dish)'); request('place_obj_on_counter()'); request('pick_up(dish)')"

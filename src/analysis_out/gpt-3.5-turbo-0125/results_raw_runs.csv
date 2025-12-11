@@ -1,0 +1,126 @@
+order,mode_key,mode,file,tokens,turns,success,timesteps,nonzero_calls,zero_token_calls,avg_tokens_per_call,median_tokens_per_call,max_tokens_per_call,model
+boiled_egg,baseline,Free-form,experiment_2025-11-06_03-50-32_boiled_egg.json,13612,93,1,14,93,0,146.36559139784947,136.0,655.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_03-57-03_boiled_egg.json,51528,347,1,28,345,2,149.35652173913044,148.0,269.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_04-18-30_boiled_egg.json,60780,409,1,43,409,0,148.60635696821515,139.0,1047.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_05-46-09_boiled_egg.json,27098,170,1,14,170,0,159.4,159.0,344.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_06-10-47_boiled_egg.json,30186,195,1,14,194,1,155.5979381443299,152.0,271.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_06-25-00_boiled_egg.json,22816,146,1,14,146,0,156.27397260273972,155.0,288.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_06-34-48_boiled_egg.json,22544,142,1,14,141,1,159.88652482269504,159.0,294.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_06-44-44_boiled_egg.json,24019,177,1,14,177,0,135.70056497175142,131.0,249.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_06-55-17_boiled_egg.json,26473,159,1,14,156,3,169.69871794871796,140.5,3479.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_07-06-18_boiled_egg.json,23931,170,1,14,168,2,142.44642857142858,135.0,267.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_22-11-18_boiled_egg.json,26966,168,1,14,165,3,163.43030303030304,161.0,308.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_22-24-08_boiled_egg.json,21522,141,1,14,141,0,152.63829787234042,153.0,288.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_22-34-27_boiled_egg.json,57358,341,1,14,340,1,168.7,162.0,2105.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_23-00-48_boiled_egg.json,22863,150,1,14,150,0,152.42,148.0,264.0,gpt-3.5-turbo-0125
+boiled_egg,baseline,Free-form,experiment_2025-11-06_23-11-49_boiled_egg.json,30304,207,1,15,206,1,147.10679611650485,143.0,308.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_07-19-02_boiled_egg.json,1399,7,1,14,7,0,199.85714285714286,156.0,471.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_07-20-16_boiled_egg.json,1196,8,1,14,8,0,149.5,138.5,205.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_07-23-03_boiled_egg.json,1680,13,1,15,9,4,186.66666666666666,197.0,253.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_07-24-33_boiled_egg.json,1242,12,1,15,8,4,155.25,152.0,200.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_07-26-15_boiled_egg.json,1088,10,1,15,6,4,181.33333333333334,161.0,316.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_07-27-37_boiled_egg.json,1050,7,1,14,7,0,150.0,161.0,186.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_07-28-51_boiled_egg.json,1119,12,1,15,8,4,139.875,140.0,193.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_07-29-35_boiled_egg.json,981,8,1,14,8,0,122.625,119.0,201.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_07-30-50_boiled_egg.json,1139,6,1,14,6,0,189.83333333333334,205.0,253.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_07-31-36_boiled_egg.json,1276,8,1,14,8,0,159.5,150.5,247.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_23-29-36_boiled_egg.json,837,6,1,14,6,0,139.5,133.5,198.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_23-30-54_boiled_egg.json,1050,8,1,14,8,0,131.25,137.5,186.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_23-33-28_boiled_egg.json,1309,12,1,15,8,4,163.625,151.5,304.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_23-34-33_boiled_egg.json,1308,8,1,14,8,0,163.5,164.0,241.0,gpt-3.5-turbo-0125
+boiled_egg,reduced,Reduced,experiment_2025-11-06_23-35-18_boiled_egg.json,1262,9,1,14,9,0,140.22222222222223,134.0,171.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_08-00-51_boiled_egg.json,30506,199,1,15,199,0,153.2964824120603,150.0,322.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_08-14-21_boiled_egg.json,24433,162,1,15,161,1,151.75776397515529,144.0,1129.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_08-29-41_boiled_egg.json,40746,254,1,14,254,0,160.41732283464566,156.5,344.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_08-46-57_boiled_egg.json,51493,345,1,14,344,1,149.6889534883721,146.0,301.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_09-08-09_boiled_egg.json,42350,279,1,15,278,1,152.33812949640287,146.0,289.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_09-24-46_boiled_egg.json,39019,259,1,14,259,0,150.65250965250965,147.0,265.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_09-41-04_boiled_egg.json,27074,196,1,14,196,0,138.1326530612245,132.5,316.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_09-51-56_boiled_egg.json,24193,168,1,14,168,0,144.00595238095238,137.0,345.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_10-06-35_boiled_egg.json,34398,222,1,14,222,0,154.94594594594594,149.5,688.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_17-03-51_boiled_egg.json,48834,319,1,14,319,0,153.0846394984326,148.0,439.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_17-27-57_boiled_egg.json,21597,136,1,14,136,0,158.8014705882353,140.0,978.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_17-39-06_boiled_egg.json,24319,144,1,15,144,0,168.88194444444446,143.0,2134.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_17-51-05_boiled_egg.json,30295,203,1,14,201,2,150.72139303482587,150.0,282.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_18-27-02_boiled_egg.json,33253,226,1,15,225,1,147.79111111111112,141.0,332.0,gpt-3.5-turbo-0125
+boiled_egg,always,Always Talk,experiment_2025-11-07_19-02-16_boiled_egg.json,23726,149,1,14,149,0,159.23489932885906,157.0,318.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_21-15-05_boiled_egg.json,14157,102,1,15,102,0,138.7941176470588,135.0,268.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_21-22-27_boiled_egg.json,31938,216,1,14,214,2,149.2429906542056,144.0,303.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_21-38-12_boiled_egg.json,39845,306,1,15,306,0,130.21241830065358,124.0,363.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_21-57-21_boiled_egg.json,20695,128,1,14,128,0,161.6796875,154.5,827.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_22-06-55_boiled_egg.json,41442,277,1,15,276,1,150.15217391304347,149.5,328.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_22-26-13_boiled_egg.json,25101,176,1,14,176,0,142.6193181818182,138.0,451.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_22-53-00_boiled_egg.json,14606,97,1,15,97,0,150.57731958762886,148.0,279.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_22-59-38_boiled_egg.json,18617,131,1,15,131,0,142.1145038167939,130.0,373.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_23-08-30_boiled_egg.json,4470,27,1,14,27,0,165.55555555555554,164.0,252.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_23-26-25_boiled_egg.json,24304,172,1,14,170,2,142.96470588235294,136.0,291.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-07_23-37-53_boiled_egg.json,59637,400,1,14,400,0,149.0925,143.0,323.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-08_00-19-48_boiled_egg.json,21358,123,1,14,123,0,173.64227642276424,162.0,308.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-08_00-29-48_boiled_egg.json,13356,88,1,14,88,0,151.77272727272728,137.5,727.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-08_00-35-51_boiled_egg.json,14813,90,1,14,89,1,166.43820224719101,167.0,302.0,gpt-3.5-turbo-0125
+boiled_egg,pruning_only,Pruning Only,experiment_2025-11-08_00-53-36_boiled_egg.json,10149,67,1,14,67,0,151.47761194029852,146.0,272.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_07-55-11_boiled_mushroom.json,18818,136,1,15,135,1,139.3925925925926,133.0,298.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_08-05-15_boiled_mushroom.json,26217,177,1,15,176,1,148.96022727272728,140.0,358.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_08-18-37_boiled_mushroom.json,50690,329,1,14,327,2,155.01529051987768,151.0,300.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_16-58-25_boiled_mushroom.json,25955,178,1,14,178,0,145.81460674157304,142.0,636.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_17-09-57_boiled_mushroom.json,48822,362,1,14,359,3,135.99442896935932,129.0,375.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_17-33-42_boiled_mushroom.json,34194,221,1,14,221,0,154.7239819004525,151.0,336.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_17-49-33_boiled_mushroom.json,28603,186,1,14,186,0,153.77956989247312,146.5,327.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_18-03-21_boiled_mushroom.json,25773,184,1,14,184,0,140.07065217391303,132.5,284.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_18-18-17_boiled_mushroom.json,23703,164,1,14,163,1,145.41717791411043,145.0,235.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_19-46-54_boiled_mushroom.json,41693,295,1,14,294,1,141.81292517006804,140.0,292.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_20-38-01_boiled_mushroom.json,31250,211,1,15,208,3,150.2403846153846,146.5,327.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_20-57-29_boiled_mushroom.json,15758,104,1,14,104,0,151.51923076923077,150.0,334.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_21-05-49_boiled_mushroom.json,46036,317,1,14,316,1,145.68354430379748,142.0,420.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_21-38-44_boiled_mushroom.json,39730,251,1,14,251,0,158.28685258964143,157.0,560.0,gpt-3.5-turbo-0125
+boiled_mushroom,baseline,Free-form,experiment_2025-11-06_21-57-13_boiled_mushroom.json,27926,178,1,14,178,0,156.8876404494382,147.0,331.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-36-05_boiled_mushroom.json,1258,13,1,15,9,4,139.77777777777777,142.0,177.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-38-16_boiled_mushroom.json,1271,13,1,15,9,4,141.22222222222223,136.0,197.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-39-40_boiled_mushroom.json,1211,8,1,14,8,0,151.375,153.0,190.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-43-26_boiled_mushroom.json,1128,6,1,14,6,0,188.0,163.0,369.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-44-20_boiled_mushroom.json,1324,13,1,15,9,4,147.11111111111111,164.0,204.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-45-12_boiled_mushroom.json,943,6,1,14,6,0,157.16666666666666,136.5,229.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-46-07_boiled_mushroom.json,1216,8,1,14,8,0,152.0,140.5,250.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-47-57_boiled_mushroom.json,1396,12,1,15,8,4,174.5,167.5,234.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-49-21_boiled_mushroom.json,1115,12,1,15,8,4,139.375,124.0,251.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_07-50-40_boiled_mushroom.json,1046,8,1,14,8,0,130.75,128.0,166.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_23-39-30_boiled_mushroom.json,1394,8,1,14,8,0,174.25,159.5,288.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_23-40-32_boiled_mushroom.json,1523,8,1,14,8,0,190.375,183.0,251.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_23-41-24_boiled_mushroom.json,1212,9,1,14,9,0,134.66666666666666,130.0,172.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_23-42-35_boiled_mushroom.json,1211,7,1,14,7,0,173.0,186.0,240.0,gpt-3.5-turbo-0125
+boiled_mushroom,reduced,Reduced,experiment_2025-11-06_23-44-12_boiled_mushroom.json,1398,8,1,14,8,0,174.75,178.5,197.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,baseline,Free-form,experiment_2025-11-24_07-36-51_taro_bean_and_bell_pepper_patty.json,12863,71,1,57,69,2,186.42028985507247,183.0,364.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,baseline,Free-form,experiment_2025-11-24_07-55-34_taro_bean_and_bell_pepper_patty.json,13394,76,1,58,76,0,176.23684210526315,173.5,355.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,baseline,Free-form,experiment_2025-11-24_08-01-55_taro_bean_and_bell_pepper_patty.json,12381,71,1,58,68,3,182.0735294117647,178.0,357.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,baseline,Free-form,experiment_2025-11-24_08-07-47_taro_bean_and_bell_pepper_patty.json,19551,123,1,58,123,0,158.9512195121951,147.0,259.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,baseline,Free-form,experiment_2025-11-24_08-16-08_taro_bean_and_bell_pepper_patty.json,10620,65,1,58,65,0,163.3846153846154,159.0,334.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,baseline,Free-form,experiment_2025-12-10_00-34-19_taro_bean_and_bell_pepper_patty.json,11571,73,1,58,73,0,158.5068493150685,143.0,652.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,baseline,Free-form,experiment_2025-12-10_00-39-58_taro_bean_and_bell_pepper_patty.json,20971,121,1,59,119,2,176.2268907563025,167.0,439.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,baseline,Free-form,experiment_2025-12-10_00-50-09_taro_bean_and_bell_pepper_patty.json,10102,62,1,58,62,0,162.93548387096774,161.5,325.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,baseline,Free-form,experiment_2025-12-10_00-54-58_taro_bean_and_bell_pepper_patty.json,28337,172,1,57,172,0,164.75,158.5,355.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,baseline,Free-form,experiment_2025-12-10_01-08-22_taro_bean_and_bell_pepper_patty.json,37558,226,1,59,224,2,167.66964285714286,160.5,446.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,reduced,Reduced,experiment_2025-11-24_07-43-08_taro_bean_and_bell_pepper_patty.json,800,4,1,58,4,0,200.0,203.5,205.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,reduced,Reduced,experiment_2025-11-24_08-21-07_taro_bean_and_bell_pepper_patty.json,2245,10,1,57,10,0,224.5,199.5,437.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,reduced,Reduced,experiment_2025-11-24_08-24-21_taro_bean_and_bell_pepper_patty.json,1613,7,1,57,7,0,230.42857142857142,204.0,323.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,reduced,Reduced,experiment_2025-11-24_08-26-03_taro_bean_and_bell_pepper_patty.json,1873,10,1,59,10,0,187.3,166.0,366.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,reduced,Reduced,experiment_2025-11-24_08-28-02_taro_bean_and_bell_pepper_patty.json,1329,8,1,58,8,0,166.125,157.0,255.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,reduced,Reduced,experiment_2025-11-24_08-28-59_taro_bean_and_bell_pepper_patty.json,1290,7,1,59,7,0,184.28571428571428,184.0,297.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,reduced,Reduced,experiment_2025-11-24_08-42-00_taro_bean_and_bell_pepper_patty.json,1492,7,1,57,7,0,213.14285714285714,192.0,349.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,reduced,Reduced,experiment_2025-11-24_08-45-50_taro_bean_and_bell_pepper_patty.json,1634,12,1,60,10,2,163.4,160.5,231.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,reduced,Reduced,experiment_2025-11-24_08-46-57_taro_bean_and_bell_pepper_patty.json,913,4,1,58,4,0,228.25,200.5,348.0,gpt-3.5-turbo-0125
+taro_bean_and_bell_pepper_patty,reduced,Reduced,experiment_2025-11-24_08-48-43_taro_bean_and_bell_pepper_patty.json,1693,9,1,58,9,0,188.11111111111111,144.0,325.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,baseline,Free-form,experiment_2025-11-24_07-26-31_zucchini_green_pea_and_onion_patty.json,16669,111,1,59,109,2,152.92660550458714,149.0,301.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,baseline,Free-form,experiment_2025-12-10_01-38-39_zucchini_green_pea_and_onion_patty.json,14920,89,1,58,89,0,167.64044943820224,162.0,279.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,baseline,Free-form,experiment_2025-12-10_01-48-48_zucchini_green_pea_and_onion_patty.json,22076,128,1,58,128,0,172.46875,159.0,375.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,baseline,Free-form,experiment_2025-12-10_01-59-07_zucchini_green_pea_and_onion_patty.json,21227,134,1,59,134,0,158.41044776119404,150.0,303.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,baseline,Free-form,experiment_2025-12-10_02-27-24_zucchini_green_pea_and_onion_patty.json,24442,163,1,58,161,2,151.8136645962733,146.0,390.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,reduced,Reduced,experiment_2025-11-24_07-44-02_zucchini_green_pea_and_onion_patty.json,921,4,1,58,4,0,230.25,226.5,273.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,reduced,Reduced,experiment_2025-11-24_08-30-08_zucchini_green_pea_and_onion_patty.json,2071,8,1,59,8,0,258.875,291.5,381.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,reduced,Reduced,experiment_2025-11-24_08-31-28_zucchini_green_pea_and_onion_patty.json,1942,10,1,58,10,0,194.2,194.5,289.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,reduced,Reduced,experiment_2025-11-24_08-33-14_zucchini_green_pea_and_onion_patty.json,323,2,1,57,2,0,161.5,161.5,210.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,reduced,Reduced,experiment_2025-11-24_08-34-12_zucchini_green_pea_and_onion_patty.json,728,3,1,57,3,0,242.66666666666666,291.0,323.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,reduced,Reduced,experiment_2025-11-24_08-34-45_zucchini_green_pea_and_onion_patty.json,1733,9,1,57,9,0,192.55555555555554,187.0,265.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,reduced,Reduced,experiment_2025-11-24_08-36-11_zucchini_green_pea_and_onion_patty.json,1935,10,1,58,10,0,193.5,193.5,317.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,reduced,Reduced,experiment_2025-11-24_08-37-42_zucchini_green_pea_and_onion_patty.json,438,2,1,58,2,0,219.0,219.0,281.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,reduced,Reduced,experiment_2025-11-24_08-38-29_zucchini_green_pea_and_onion_patty.json,812,3,1,57,3,0,270.6666666666667,246.0,376.0,gpt-3.5-turbo-0125
+zucchini_green_pea_and_onion_patty,reduced,Reduced,experiment_2025-11-24_08-39-11_zucchini_green_pea_and_onion_patty.json,1284,5,1,58,5,0,256.8,204.0,501.0,gpt-3.5-turbo-0125

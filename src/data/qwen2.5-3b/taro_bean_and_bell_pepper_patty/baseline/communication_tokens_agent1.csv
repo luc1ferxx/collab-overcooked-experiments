@@ -1,0 +1,6 @@
+timestep,agent,tokens,utterance
+50,Assistant,204,"pickup(dish, dish_dispenser); place_obj_on_counter(); request('put_obj_in_utensil(oven0)'); wait(5); request('fill_dish_with_food(dish)'); request('place_obj_on_counter()')"
+50,Assistant,175,"pickup(dish, dish_dispenser); place_obj_on_counter(); request('put_obj_in_utensil(oven0)'); wait(5); request('fill_dish_with_food(dish)'); request('place_obj_on_counter()')
+END"
+50,Assistant,286,"pickup(bell_pepper_slices, chopping_board0); place_obj_on_counter(); pickup(dish, dish_dispenser); place_obj_on_counter(); request('put_obj_in_utensil(oven0)'); wait(5); request('fill_dish_with_food(dish)'); request('place_obj_on_counter()'); request('pick_up(dish)');
+END"

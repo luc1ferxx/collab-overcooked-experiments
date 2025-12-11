@@ -3,6 +3,7 @@ import json
 import time
 import pandas as pd
 from argparse import ArgumentParser
+from utils import get_model_folder_name
 
 models = ["gpt-4o"]
 
@@ -11,7 +12,8 @@ orders = ["baked_bell_pepper", "baked_sweet_potato", "boiled_egg", "boiled_mushr
 def main(variant):
 
     order = variant['order']
-    eval_result_dir = 'eval_result' + '/' + variant['model']
+    model_folder = get_model_folder_name(variant['gpt_model'])
+    eval_result_dir = os.path.join(variant['log_dir'], model_folder)
     
     order_dir = os.path.join(eval_result_dir, order)
     eval_file = os.path.join(order_dir, 'evaluation_result.json')
@@ -32,7 +34,7 @@ def main(variant):
     task_metrics = order_data.get('task_metrics', {})
     statistic = order_data.get('statistic', {})
 
-    excel_path = os.path.join('eval_result', 'statistics_data.csv')
+    excel_path = os.path.join(variant['log_dir'], 'statistics_data.csv')
     
     if os.path.exists(excel_path):
         df = pd.read_csv(excel_path)
@@ -59,7 +61,7 @@ def main(variant):
                                     'overall_collaboration'])
     
     new_row = pd.DataFrame([{
-    'model': variant['model'],
+    'model': variant['gpt_model'],
     'order': order,
     'success_rate': task_metrics['success_rate'],
     'time_avg': task_metrics['time_avg'],
@@ -101,15 +103,16 @@ def boolean_argument(value):
 if __name__ == '__main__':
     parser = ArgumentParser(description='Process evaluation results and update statistics data.')
 
-    parser.add_argument('--model', type=str, default='gpt-3.5', help='Number of episodes')
+    parser.add_argument('--gpt_model', '--model', dest='gpt_model', type=str, default='gpt-3.5', help='Model whose results to organize')
     parser.add_argument('--order', type=str, default='AUTO', help='Task order name, "AUTO" represents automatic recognition.')
+    parser.add_argument('--log_dir', type=str, default='eval_result', help='Directory containing evaluation outputs')
     args = parser.parse_args()
     variant = vars(args)
 
     start_time = time.time()
     for model in models:
         for order in orders:
-            variant['model'] = model
+            variant['gpt_model'] = model
             variant['order'] = order
             main(variant)
     end_time = time.time()

@@ -1,36 +1,116 @@
 timestep,agent,tokens,utterance
-50,Assistant,334,"Please pick up the bell pepper slices from the ingredient dispenser. Prepare the chopping board for cutting the bell pepper slice. Once ready, place the items on the counter. Then, pick up the mashed taro bean from the oven0 and blend it in the blender. After blending, place the mixture in the pot0. Once the dish is ready in the pot0, serve it on one of the counters."
-50,Assistant,259,"Please pick up the taro bean and bell pepper slice from the ingredient dispenser. Prepare the chopping board for cutting the bell pepper slice. Once ready, place the items on the counter. Then, blend the mashed taro bean and bell pepper slice in the blender. After blending, place the mixture on the counter again. Fill the pot0 with the blended mixture and serve the dish on one of the counters."
-51,Assistant,192,"""I will first pick up the taro slices from the ingredient dispenser, and then chop them on the chopping board. Once chopped, I will place the blender on the counter for you to proceed with blending the taro slices."""
-51,Assistant,170,"""I will chop the mashed taro bean and bell pepper, then pick them up from the oven, fill a dish with them, and place the dish on the first available counter for serving."""
-52,Assistant,206,"** ""After you place the dish on the counter near me, please chop the bell peppers and place them on the chopping board0. Then, blend the taro beans in the blender0."""
-52,Assistant,232,"""Please pick up the dish from the counter, and then place it on the counter near me. Next, place the dish in the pot0 utensil. The oven is currently cooking chopped onions, so let it finish for 2 timesteps. Afterwards, I will chop the bell peppers and add them to the pot0."""
-53,Assistant,184,"""I have chopped the taro bean. Could you please pick up a dish from the counter?"""
-53,Assistant,171,"""I have prepared the chopped taro bean and bell pepper. Could you please pick up a dish from the counter and place it on the counter?"""
-53,Assistant,282,"""I have the chopped taro bean and bell pepper slices ready. Could you please bring a dish from the dish dispenser and mix the chopped ingredients on the counter?"""
-53,Assistant,202,"""Could you please bring a dish from the dish dispenser and mix the chopped taro bean and bell pepper slices on the counter?"""
-53,Assistant,199,"""I need to mix the chopped taro bean and bell pepper slices first. Could you please bring a dish from the dish dispenser?"""
-53,Assistant,92,"""Could you please bring a dish from the dish dispenser?"""
-53,Assistant,159,"""I need to mix the chopped taro bean and bell pepper slices before you can fill the dish. Could you please bring a dish from the dish dispenser?"""
-53,Assistant,159,"""I have the chopped taro bean and bell pepper slices ready. Could you please bring a dish from the dish dispenser and mix them on the counter?"""
-53,Assistant,103,"""Could you please bring a dish from the counter and mix the chopped taro bean and bell pepper slices on the counter?"""
-53,Assistant,122,I need you to pick up the dish from the counter and mix it with the chopped taro bean and bell pepper slices. Then we can proceed with the recipe.
-53,Assistant,144,I need you to bring a dish from the dish dispenser and mix it with the chopped taro bean and bell pepper slices on the counter. Then we can proceed with the recipe.
-53,Assistant,112,"""Could you please pick up the dish from the counter and place it on the counter?"""
-53,Assistant,183,"""I need the taro bean chopped. Could you please bring a dish from the dish dispenser so I can mix the chopped taro bean and bell pepper slices on the counter?"""
-53,Assistant,149,Assistant needs to place the chopped taro bean and bell pepper slices on the counter. Could you please bring the chopped ingredients from the chopping board to the counter?
-53,Assistant,196,Could you please bring a dish from the dish dispenser and mix the chopped taro bean and bell pepper slices on the counter? Then we can proceed with the recipe.
-53,Assistant,121,"""Could you please bring a dish from the dish dispenser?"""
-53,Assistant,144,"""Could you please pick up a dish from the dish dispenser and mix it with the chopped taro bean and bell pepper slices on the counter?"""
-53,Assistant,146,"""Could you please bring a fresh, empty dish from the dish dispenser so I can mix the chopped taro bean and bell pepper slices on the counter?"""
-53,Assistant,100,"I need a fresh, empty dish from the dish dispenser so I can mix the chopped taro bean and bell pepper slices on the counter."
-53,Assistant,146,Could you please bring a dish from the dish dispenser so I can mix the chopped taro bean and bell pepper slices on the counter?
-53,Assistant,145,"""Could you please bring a fresh, empty dish from the dish dispenser so I can mix the chopped taro bean and bell pepper slices on the counter?"""
-53,Assistant,181,[NOTHING]
-53,Assistant,211,"""I need you to fetch a dish from the counter. Then I will pick up the taro bean from the ingredient dispenser and chop it. After that, I will chop the bell pepper slices and fill a dish with both the chopped taro bean and bell pepper."""
-55,Assistant,162,"""I will pick up the taro bean and bell pepper patty from the counter and cook it in the oven."""
-55,Assistant,201,"""I will start cooking the taro bean and bell pepper patty in the oven."""
-55,Assistant,170,"""Please pick up the taro bean and bell pepper patty from the counter and place it in the oven to cook."""
-55,Assistant,183,"""Please cook the taro bean and bell pepper patty in the oven."""
-55,Assistant,191,[NOTHING]
-55,Assistant,198,"""Please pick up the taro bean and bell pepper from the ingredient dispenser and chop them on the chopping board. Once chopped, place them on the counter. After that, fill the dish in the oven with the cooked taro bean and bell pepper."""
+50,Assistant,205,"""Assistant says (turn 2): Could you please pick up the bell_pepper_slices from the ingredient dispenser and place it on the counter so I can chop it?"""
+50,Assistant,150,"""Assistant says (turn 3): I will chop the bell pepper slices now. Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them."""
+50,Assistant,155,"""Assistant says (turn 4): Please pick up the bell_pepper_slices from the counter and place them on the chopping board so I can chop them."""
+50,Assistant,150,"""Assistant says (turn 5): Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them."""
+50,Assistant,138,"""Assistant says (turn 6): I apologize for the mistake. I will go back to the ingredient dispenser to get more bell_pepper_slices. Could you please heat the mashed_taro and beans in the oven while I am gone?"""
+50,Assistant,158,"""Assistant says (turn 7): I apologize for the mistake. I will go back to the ingredient dispenser to get more bell_pepper_slices. Could you please continue heating the mashed taro and beans in the oven while I am gone?"""
+50,Assistant,127,"""Assistant says (turn 8): Could you please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them?"""
+50,Assistant,169,Could you please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them?
+50,Assistant,130,Please chop the bell_pepper_slices on the chopping_board and then place them back on the counter. I will cut them and then we can proceed with the recipe.
+50,Assistant,185,Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter so I can chop them.
+50,Assistant,145,"""Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them."""
+50,Assistant,126,Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter so I can chop them.
+50,Assistant,144,Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them.
+50,Assistant,151,"Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter so I can chop them. After that, please place the bell pepper slices on the chopping board."
+50,Assistant,86,Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them.
+50,Assistant,149,"""Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them."""
+50,Assistant,159,Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them.
+50,Assistant,133,Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them.
+50,Assistant,123,Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter so I can chop them.
+50,Assistant,155,Could you please pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter so I can chop them?
+50,Assistant,232,"Could you please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them? After that, please place the chopped bell pepper slices back on the counter."
+50,Assistant,227,"""Assistant says: I apologize for the confusion. I will pick up the bell_pepper_slices from the ingredient dispenser myself and place them on the counter. Then, I will pick them up again and place them on the chopping board so I can chop them."""
+50,Assistant,186,"""Assistant says (turn 24): I apologize for the confusion. I will pick up the bell_pepper_slices from the ingredient dispenser myself and place them on the counter. Then, I will pick them up again and place them on the chopping board so I can chop them."""
+50,Assistant,158,I apologize for the mistake. I will go back to the ingredient dispenser to get more bell_pepper_slices. Could you please heat the mashed_taro and beans in the oven while I am gone?
+50,Assistant,132,Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them.
+50,Assistant,151,"I apologize for the confusion. I will pick up the bell_pepper_slices from the ingredient dispenser myself and place them on the counter. Then, I will pick them up again and place them on the chopping board so I can chop them."
+50,Assistant,175,"""Assistant says (turn 28): I apologize for the confusion. I will pick up the bell_pepper_slices from the ingredient dispenser myself and place them on the chopping board so I can chop them."""
+50,Assistant,139,"""Assistant says (turn X): Could you please pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter so I can chop them?"" (Replace X with the current turn number)"
+50,Assistant,160,I apologize for the confusion. I will pick up the bell_pepper_slices from the ingredient dispenser myself and place them on the chopping board so I can chop them.
+50,Assistant,130,"Could you please pick up the bell_pepper_slices from the counter and place them on the chopping board so I can chop them? After that, please place the chopped bell_pepper_slices back on the counter."
+50,Assistant,146,"""Assistant says (turn X): Could you please pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter so I can chop them?"" (Replace X with the current turn number)"
+50,Assistant,159,"I apologize for the confusion. I will pick up the bell_pepper_slices from the ingredient dispenser myself and place them on the counter. Then, I will pick them up again and place them on the chopping board so I can chop them. Please continue heating the mashed taro and beans in the oven while I am preparing the bell pepper slices."
+50,Assistant,255,"Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter so I can chop them. Then, I will place them on the chopping board and chop them."
+50,Assistant,132,Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them.
+50,Assistant,115,Could you please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them. I apologize for any confusion earlier.
+50,Assistant,177,"I apologize for the confusion earlier. I will pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter so I can chop them. Then, I will place them on the chopping board and chop them."
+50,Assistant,132,"""Could you please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them?"""
+50,Assistant,143,"I will pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter. Then, I will pick them up again and place them on the chopping board for chopping."
+50,Assistant,159,"Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter so I can chop them. Then, I will place them on the chopping board for chopping, I apologize for any confusion earlier."
+50,Assistant,194,Assistant says (turn X): Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the counter so I can chop them. (Replace X with the current turn number)
+50,Assistant,109,Please pick up the bell_pepper_slices from the counter and place them on the chopping board so I can chop them.
+50,Assistant,120,Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board for chopping. I apologize for any confusion earlier.
+50,Assistant,138,Please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board for chopping. I apologize for any confusion earlier.
+50,Assistant,126,"""I apologize for the confusion earlier. I will pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board for chopping."""
+50,Assistant,163,"I apologize for the mistake. I will go back to the ingredient dispenser to get more bell_pepper_slices. Could you please heat the mashed taro and beans in the oven while I am gone? After that, please pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board so I can chop them."
+50,Assistant,174,"- ""I apologize for the confusion earlier. I will pick up the bell_pepper_slices from the ingredient dispenser and place them on the chopping board for chopping."""
+50,Assistant,125,Assistant says (turn X): Could you please cut the bell_pepper_slices on the chopping board? I will then chop them and we can proceed with the recipe. (Replace X with the current turn number)
+50,Assistant,157,Assistant says: I apologize for the confusion earlier. I will pick up the bell_pepper_slic
+50,Assistant,104,[NOTHING]
+50,Assistant,122,"""Assistant says (turn 1): Please pick up the bell_pepper_slices from the ingredient dispenser and place it on the counter."""
+52,Assistant,208,"""Assistant, please pick up a dish from the dish dispenser. Then, take the mashed taro and bell pepper slices from the oven and fill the dish with them. After that, please deliver the dish to the serving location."""
+52,Assistant,241,"""Assistant, please chop the taro slices and add them to the oven. Meanwhile, I will pick up a dish from the dish dispenser, take the mashed taro and bell pepper slices from the oven, fill the dish with them, and deliver the dish to the serving location."""
+52,Assistant,254,"""Chef, please continue chopping the taro slices and add them to the oven when you're ready. Meanwhile, I will pick up a dish from the dish dispenser, take the taro bean slices and bell pepper slices from the oven, and fill the dish with them. After that, I will deliver the dish to the serving location."""
+52,Assistant,236,"Chef, could you please chop the taro slices and add them to the oven? Once you've done that, I will take the mashed taro and bell pepper slices from the oven, fill a dish with them, and deliver it to the serving location."
+52,Assistant,239,"Chef, please chop the taro slices and add them to the oven. Once you've done that, I will take the mashed taro and bell pepper slices from the oven, fill a dish with them, and deliver it to the serving location."
+52,Assistant,209,"Chef, please finish chopping the taro slices and adding them to the oven. Once you're done, I will pick up a dish, take the mashed taro and bell pepper slices from the oven, fill the dish with them, and deliver it to the serving location."
+52,Assistant,169,"Chef, please continue with delivering the soup. I will chop the taro slices and add them to the oven when I'm ready."
+52,Assistant,242,"Chef, please chop the taro slices and add them to the oven. Once you've done that, I will take the mashed taro and bell pepper slices from the oven, fill a dish with them, and deliver it to the serving location."
+52,Assistant,216,"Chef, please chop the taro slices and add them to the oven. Once you've done that, I will take the mashed taro and bell pepper slices from the oven, fill a dish with them, and deliver it to the serving location."
+52,Assistant,170,"Assistant, please take the mashed taro beans and bell pepper slices from the oven and fill the dish with them. After that, please deliver the dish to the serving location."
+52,Assistant,228,"Assistant, please chop the taro slices and add them to the oven when you're ready. Meanwhile, I will pick up a dish from the dish dispenser, take the mashed taro and bell pepper slices from the oven, fill the dish with them, and deliver the dish to the serving location."
+52,Assistant,227,"Chef, could you please chop the taro slices and add them to the oven when you're ready? Meanwhile, I will pick up a dish, take the mashed taro and bell pepper slices from the oven, fill the dish with them, and deliver it to the serving location."
+52,Assistant,214,"Chef, could you please continue baking the soup? I will take the mashed taro bean and bell pepper slices from the oven, fill a dish with them, and deliver it to the serving location."
+52,Assistant,268,"Chef, please chop the taro slices and add them to the oven when you're ready. Meanwhile, I will pick up a dish, take the mashed taro and bell pepper slices from the oven, fill the dish with them, and deliver it to the serving location."
+52,Assistant,266,"""Chef, please finish chopping the taro slices and adding them to the oven when you're ready. Meanwhile, I will pick up a dish from the dish dispenser, take the mashed taro and bell pepper slices from the oven, fill the dish with them, and deliver the dish to the serving location."""
+52,Assistant,144,"Chef, please continue baking the soup. I will take the mashed taro bean and bell pepper slices from the oven, fill a dish with them, and deliver it to the serving location."
+52,Assistant,168,"Chef, please chop the taro slices and add them to the oven. I will take the mashed taro and bell pepper slices from the oven, fill a dish with them, and deliver it to the serving location."
+52,Assistant,232,"Chef, please continue chopping the taro slices and adding them to the oven when you're ready. Meanwhile, I will pick up a dish from the dish dispenser, take the mashed taro and bell pepper slices from the oven, fill the dish with them, and deliver the dish to the serving location."
+52,Assistant,171,"Assistant, please pick up a dish from the dish dispenser. Then, take the taro bean slices from the oven and fill the dish with them. After that, please deliver the dish to the serving location."
+52,Assistant,241,"Chef, please continue chopping the taro slices and adding them to the oven when you're ready. Meanwhile, I will take the mashed taro and bell pepper slices from the oven, fill a dish with them, and deliver it to the serving location."
+52,Assistant,330,"Chef, the dish on the counter has mashed taro and bell pepper slices in it. Please continue chopping the taro slices and adding them to the oven when you're ready. Meanwhile, I will take the taro bean slices from the oven, fill the dish on the counter with them, and deliver it to the serving location."
+52,Assistant,223,"""Assistant, please pick up a dish from the dish dispenser. Then, take the mashed taro and bell pepper slices from the oven and fill the dish with them. After that, please deliver the dish to the serving location."""
+52,Assistant,219,"Chef, please chop the taro slices and add them to the oven. Once you've done that, I will handle the rest of the recipe to complete the taro bean and bell pepper patty order. Could you please chop the taro slices and add them to the oven when you're ready? Then, I will stir the bell pepper slices in the blender, fill a dish with the blended mixture, and deliver it to the serving location."
+52,Assistant,210,"""Assistant, please pick up a dish from the dish dispenser. Then, take the taro bean and bell pepper slices from the oven and fill the dish with them."""
+53,Assistant,204,"""Chef, I will prepare the taro beans on the chopping board and blend them in the blender. Once they are ready, please pick up a dish from the counter and fill it with the blended taro beans."""
+53,Assistant,128,"""Chef, please pick up a dish from the counter. I will fill it with the cooked food from the blender."""
+54,Assistant,137,"""I will grab the taro bean and bell pepper. Please start cooking the chopped onions in the oven when you're ready."""
+54,Assistant,121,"""I will grab the taro bean. Please cook the chopped onions in the oven when you're ready."""
+54,Assistant,161,"""I will grab the taro bean from the ingredient dispenser. Once the chopped onions and taro slices are ready, I will add the taro bean and bell pepper to the pot."""
+54,Assistant,165,"""I will grab the taro bean from the ingredient dispenser. Once the chopped onions and taro slices are ready, I will add the taro bean and bell pepper to the pot."""
+54,Assistant,130,"""I will grab the taro bean from the ingredient dispenser. Please continue cooking the taro slices in the pot."""
+54,Assistant,105,"""I will grab the bell pepper from the ingredient dispenser. Please continue cooking the chopped onions and taro slices."""
+54,Assistant,134,"""I will pick up the taro bean and bell pepper from the ingredient dispenser. Please continue cooking the taro slices in the pot."""
+54,Assistant,184,"""Please pick up the taro bean from the counter. I will retrieve the bell pepper from the ingredient dispenser and be ready to add it to the pot when the chopped onions and taro slices are ready."""
+54,Assistant,185,"""I will retrieve the bell pepper from the ingredient dispenser and add it to the pot when the chopped onions and taro slices are ready."""
+54,Assistant,164,"""I will retrieve the taro bean and bell pepper from the ingredient dispenser. Once the chopped onions and taro slices are ready, I will add the taro bean and bell pepper to the pot."""
+54,Assistant,154,"""Please get the dish from the counter. I will retrieve the taro bean and add it to the pot when the chopped onions and taro slices are ready."""
+54,Assistant,169,"""Please continue cooking the taro slices in the pot. I will retrieve the taro bean from the ingredient dispenser and be ready to add it to the pot when the chopped onions and taro slices are ready."""
+54,Assistant,204,"""Please continue cooking the taro slices in the pot. I will retrieve the taro bean from the ingredient dispenser and be ready to add it to the pot when the chopped onions and taro slices are ready."""
+54,Assistant,194,"""Please continue cooking the taro slices in the pot. I will retrieve the taro bean from the ingredient dispenser and cut it, then place it on the counter to be ready for cooking."""
+54,Assistant,178,"Please pick up the dish from the counter. I will retrieve the taro bean from the ingredient dispenser and cut it, then place it on the counter to be ready for cooking. Once the chopped onions and taro slices are ready, I will add the taro bean to the pot."
+54,Assistant,170,Please continue cooking the taro slices in the pot. I will add the taro bean to the pot once they are ready.
+54,Assistant,184,"""I will cut the taro bean. Please retrieve the taro bean from the ingredient dispenser and place it on the chopping board so I can cut it."""
+54,Assistant,182,"Please retrieve the taro bean from the ingredient dispenser and place it on the chopping board so I can cut it. Once cut, please place the taro bean on the counter."
+54,Assistant,195,"Please retrieve the taro bean from the ingredient dispenser and place it on the chopping board so I can cut it. Once cut, please place the taro bean on the counter."
+54,Assistant,171,"Please retrieve the taro bean from the ingredient dispenser and place it on the chopping board so I can cut it. Once cut, please place the taro bean on the counter."
+54,Assistant,230,"""I have cut the taro bean. Please retrieve the taro bean from the ingredient dispenser and place it on the chopping board. Once cut, please fill the dish with it and place it back on the counter. I will then add the taro bean to the pot when the chopped onions and taro slices are ready."""
+54,Assistant,204,"""I need to cut the taro bean. Could you please retrieve the taro bean from the ingredient dispenser and place it on the chopping board so I can cut it? Once cut, please fill the dish with it and place it back on the counter. I will then add the taro bean to the pot when the chopped onions and taro slices are ready."""
+54,Assistant,226,"""I need to cut the taro bean. Could you please retrieve the taro bean from the ingredient dispenser and place it on the chopping board so I can cut it? Once cut, please fill the dish with it and place it back on the counter. I will then add the taro bean to the pot when the chopped onions and taro slices are ready."""
+54,Assistant,151,"""Please pick up the dish from the counter. I will retrieve the taro bean from the ingredient dispenser and cut it, then place it on the counter to be ready for cooking."""
+54,Assistant,172,"Please retrieve the bell pepper from the ingredient dispenser and place it on the chopping board so I can cut it. Once cut, please place the bell pepper on the counter. After that, I will add the bell pepper and the taro bean to the pot."
+54,Assistant,105,"""I will cut the taro bean. After cutting, please fill the dish with it and place it back on the counter."""
+54,Assistant,229,"Please pick up the dish from the counter. I will retrieve the taro bean from the ingredient dispenser, cut it, and place it on the counter, then fill the dish with it and place it back on the counter. Once it's there, please add the taro bean to the pot."
+54,Assistant,197,"Please continue cooking the taro slices in the pot. I will retrieve the taro bean from the ingredient dispenser, cut it, and place it on the counter, then fill the dish with it and place it back on the counter. Once it's there, please add the taro bean to the pot."
+54,Assistant,174,"""I will cut the bell pepper. Please retrieve the bell pepper slices from the ingredient dispenser and place them on the chopping board so I can cut it. Once cut, please place the bell pepper on the counter."""
+54,Assistant,163,"""Please pick up the dish from the counter when you have a moment. I will prepare the taro bean and bell pepper for cooking."""
+54,Assistant,160,"""I will cut the taro bean. After cutting, please fill the dish with it and place it back on the counter."""
+54,Assistant,212,"Please retrieve the bell pepper from the ingredient dispenser and place it on the chopping board so I can cut it. Once cut, please place the bell pepper on the counter. After that, I will prepare the taro bean and be ready to fill the dish with it when you bring the dish to the counter."
+54,Assistant,202,"Please retrieve the taro bean from the ingredient dispenser and place it on the chopping board so I can cut it. Once cut, please fill the dish with it and place it back on the counter. I will then add the taro bean to the pot when the chopped onions and taro slices are ready."
+54,Assistant,170,"""I will cut the taro bean and bell pepper. Once cut, please fill the dish with them and place it on the pot so I can add the ingredients."""
+54,Assistant,251,"""Please retrieve the taro bean from the counter and the bell pepper from the ingredient dispenser. I will prepare them for cooking before adding them to the pot."""
+54,Assistant,178,"""I will cut the bell pepper. Once cut, please fill the dish with it and place it on the pot so I can add the ingredients."""
+54,Assistant,177,"I will retrieve the taro bean from the ingredient dispenser and cut it, then place it on the counter to be ready for cooking. Once it's there, please add it to the pot when the chopped onions and taro slices are ready."
+54,Assistant,184,Please retrieve the taro bean and bell pepper from the ingredient dispenser. I will prepare them for cooking before filling the dish with them. [END]
+54,Assistant,279,"""Please pick up the dish from the counter. I will retrieve the taro bean and bell pepper from the ingredient dispenser and be ready to add them to the pot when it's done cooking."""

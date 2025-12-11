@@ -15,6 +15,16 @@ from collections import defaultdict
 from collab.modules import EMBEDDING_MODEL
 
 
+def get_model_folder_name(model_name: str) -> str:
+    """
+    Convert a model identifier into a filesystem-safe folder name.
+    Examples:
+        "mistralai/Mistral-7B-Instruct-v0.3" -> "mistralai_Mistral-7B-Instruct-v0.3"
+    """
+    safe = model_name.replace("/", "_").replace("\\", "_").replace(":", "_")
+    return safe
+
+
 def make_agent(alg: str, mdp, layout, **gptargs):
 
     if alg == "Stay":
